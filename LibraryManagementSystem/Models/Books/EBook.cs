@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using LibraryManagementSystem.Utils;
 
 namespace LibraryManagementSystem.Models.Books
@@ -10,9 +11,9 @@ namespace LibraryManagementSystem.Models.Books
         public static long TotalEBooks = 0;
         public static long TotalBorrowedEBooks = 0;
 
-        public EBook(string title, string author, string URL) : base(title, author, BOOK_TYPE_EBOOK)
+        public EBook(string title, string author, string downloadLink) : base(title, author, BOOK_TYPE_EBOOK)
         {
-            DownloadLink = URL;
+            DownloadLink = downloadLink;
             TotalEBooks++;
         }
 

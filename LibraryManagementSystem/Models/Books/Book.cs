@@ -37,7 +37,7 @@ namespace LibraryManagementSystem.Models.Books
         public string Title { get => _title; protected set => _title = !string.IsNullOrEmpty(value) ? value : _title; }
         public string Author { get => _author; protected set => _author = !string.IsNullOrEmpty(value) ? value : _author; }
         public string ISBN { get => _ISBN; protected set => _ISBN = !string.IsNullOrEmpty(value) ? value : _ISBN; }
-        public bool IsBorrowed { get => _isBorrowed; protected set { _isBorrowed = value; } }
+        public bool IsBorrowed { get => _isBorrowed; set { _isBorrowed = value; } }
         public string Type { get => _type; protected set => _type = IsValidBookType(value) ? FormatBookType(value) : BOOK_TYPE_NOT_ASSIGNED; }
 
 

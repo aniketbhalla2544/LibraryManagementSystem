@@ -1,14 +1,16 @@
 ﻿using System;
 using LibraryManagementSystem.Models.Books;
+using LibraryManagementSystem.Services;
 using LibraryManagementSystem.Utils;
 
 namespace LibraryManagementSystem
 {
     internal class Program
     {
+        // update min and max of IntInValidRange() upon updating Actions
         enum Actions
         {
-            Start = -2,
+            ClearConsole = -2,
             Exit,
             DisplayMenu,
             CreatePhysicalBook,
@@ -17,11 +19,18 @@ namespace LibraryManagementSystem
             CreateEBook,
             BorrowEBook,
             ReturnEBook,
+            GetTotalPhysicalBooks,
+            GetTotalEBooks,
+            GetTotalBorrowedPhysicalBooks,
+            GetTotalBorrowedEBooks,
+            GetAllBookTitles
         }
 
         static void DisplayMenu()
         {
+            // update Actions enum upon updating Menu
             Console.WriteLine("[MENU]:");
+            Console.WriteLine("Enter -2 to clear console");
             Console.WriteLine("Enter -1 to exit");
             Console.WriteLine("Enter 0 to see menu");
             Console.WriteLine("Enter 1 to create a physical book");
@@ -30,6 +39,11 @@ namespace LibraryManagementSystem
             Console.WriteLine("Enter 4 to create an e-book");
             Console.WriteLine("Enter 5 to borrow an e-book");
             Console.WriteLine("Enter 6 to return an e-book");
+            Console.WriteLine("Enter 7 to get total physical books");
+            Console.WriteLine("Enter 8 to get total e-books");
+            Console.WriteLine("Enter 9 to get total borrowed physical books");
+            Console.WriteLine("Enter 10 to get total borrowed e-books");
+            Console.WriteLine("Enter 11 to get all book titles");
             Console.Write("\n\n");
         }
 
@@ -50,8 +64,12 @@ namespace LibraryManagementSystem
                     continue;
                 };
 
+                // TODO: get total actions
+                //int totalActions = Enum.GetValues(typeof(Actions)).Length;
+                //Console.WriteLine($"total actions: {totalActions}");
+
                 // checking if user input integer is in valid range of "Actions" numbers
-                bool userInputInValidRange = CustomUtils.IntInValidRange(check: userInputInt, max: (int)Actions.ReturnEBook, min: (int)Actions.Exit);
+                bool userInputInValidRange = CustomUtils.IntInValidRange(check: userInputInt, max: (int)Actions.GetAllBookTitles, min: (int)Actions.ClearConsole);
                 if (!userInputInValidRange)
                 {
                     Console.WriteLine("[ALERT]: Enter valid action number from Menu\n");
@@ -68,74 +86,69 @@ namespace LibraryManagementSystem
 
         static void Main(string[] args)
         {
-            const string PHYSICAL_BOOK_CREATED_ACTION_TEXT = "[ACTION]: Create Physical Book";
-            const string PHYSICAL_BOOK_BORROWED_ACTION_TEXT = "[ACTION]: Borrow Physical book";
-            const string PHYSICAL_BOOK_RETURNED_ACTION_TEXT = "[ACTION]: Return Physical book";
-
-            const string EBOOK_CREATED_ACTION_TEXT = "[ACTION]: Create Ebook";
-            const string EBOOK_BORROWED_ACTION_TEXT = "[ACTION]: Borrow Ebook";
-            const string EBOOK_RETURNED_ACTION_TEXT = "[ACTION]: Return Ebook";
-
-
+            LibManagementSystem libraryManagementSystem = new LibManagementSystem();
 
             Console.WriteLine("============= WELCOME TO LIBRARY MANAGEMENT SYSTEM ==============\n");
-
+            DisplayMenu();
 
             bool AskActionNumberUserInput = true;
             while (AskActionNumberUserInput)
             {
-                DisplayMenu();
                 int userInput = AskUserValidActionNumber();
 
                 switch (userInput)
                 {
+                    case (int)Actions.ClearConsole:
+                        Console.Clear();
+                        DisplayMenu();
+                        break;
                     case (int)Actions.Exit:
                         AskActionNumberUserInput = false;
-                        Console.WriteLine("User chose to exit");
                         break;
                     case (int)Actions.DisplayMenu:
                         Console.WriteLine();
+                        DisplayMenu();
                         continue;
                     case (int)Actions.CreatePhysicalBook:
-                        Console.WriteLine("User chose to CreatePhysicalBook");
+                        libraryManagementSystem.CreatePhysicalBook();
                         break;
                     case (int)Actions.BorrowPhysicalBook:
-                        Console.WriteLine("User chose to BorrowPhysicalBook");
+                        libraryManagementSystem.BorrowPhysicalBook();
                         break;
                     case (int)Actions.ReturnPhysicalBook:
-                        Console.WriteLine("User chose to ReturnPhysicalBook");
+                        libraryManagementSystem.ReturnPhysicalBook();
                         break;
                     case (int)Actions.CreateEBook:
-                        Console.WriteLine("User chose to CreateEBook");
+                        libraryManagementSystem.CreateEBook();
                         break;
                     case (int)Actions.BorrowEBook:
-                        Console.WriteLine("User chose to BorrowEBook");
+                        libraryManagementSystem.BorrowEBook();
                         break;
                     case (int)Actions.ReturnEBook:
-                        Console.WriteLine("User chose to ReturnEBook");
+                        libraryManagementSystem.ReturnEBook();
+                        break;
+                    case (int)Actions.GetTotalPhysicalBooks:
+                        Console.WriteLine($"Total physical books: {libraryManagementSystem.PhysicalBooks.Count}");
+                        break;
+                    case (int)Actions.GetTotalEBooks:
+                        Console.WriteLine($"Total e-books: {libraryManagementSystem.EBooks.Count}");
+                        break;
+                    case (int)Actions.GetTotalBorrowedPhysicalBooks:
+                        Console.WriteLine($"Total borrowed physicalBooks: {libraryManagementSystem.TotalBorrowedPhysicalBooks}");
+                        break;
+                    case (int)Actions.GetTotalBorrowedEBooks:
+                        Console.WriteLine($"Total borrowed e-books: {libraryManagementSystem.TotalBorrowedEBooks}");
+                        break;
+                    case (int)Actions.GetAllBookTitles:
+                        libraryManagementSystem.ConsoleAllBookTitles();
                         break;
                     default:
-                        throw new Exception("Something went wrong while choosing menu");
+                        Console.WriteLine("[ERROR]: Something went wrong while choosing menu");
+                        break;
                 }
                 Console.WriteLine();
 
             }
-
-
-            //// Actions
-            //Console.WriteLine(PHYSICAL_BOOK_CREATED_ACTION_TEXT);
-            //Book phybook1 = new PhysicalBook(title: "Earth System Science", author: "Timothy Lenton", shelfLocation: "A1");
-            //Console.WriteLine(phybook1);
-
-
-
-            //Console.WriteLine($"\n{EBOOK_CREATED_ACTION_TEXT}");
-            ////EBook ebook1 = new EBook(title: "Charlie and the Chocolate Factory", author: "Roald Dahl", URL: "");
-            //EBook ebook1 = new EBook(title: "Charlie and the Chocolate Factory", author: "Roald Dahl", URL: @"https://openlibrary.org/works/OL45790W/Charlie_and_the_Chocolate_Factory");
-            //Console.WriteLine(ebook1);
-
-
-
 
             // logging system details
             Console.WriteLine("\n\n============== SYSTEM DETAILS ===================");
