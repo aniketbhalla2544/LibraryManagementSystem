@@ -23,7 +23,8 @@ namespace LibraryManagementSystem
             GetTotalEBooks,
             GetTotalBorrowedPhysicalBooks,
             GetTotalBorrowedEBooks,
-            GetAllBookTitles
+            GetAllBookTitles,
+            GetTotalBooksCount,
         }
 
         static void DisplayMenu()
@@ -44,8 +45,10 @@ namespace LibraryManagementSystem
             Console.WriteLine("Enter 9 to get total borrowed physical books");
             Console.WriteLine("Enter 10 to get total borrowed e-books");
             Console.WriteLine("Enter 11 to get all book titles");
+            Console.WriteLine("Enter 12 to get system's total books count");
             Console.Write("\n\n");
         }
+
 
         static int AskUserValidActionNumber()
         {
@@ -69,7 +72,7 @@ namespace LibraryManagementSystem
                 //Console.WriteLine($"total actions: {totalActions}");
 
                 // checking if user input integer is in valid range of "Actions" numbers
-                bool userInputInValidRange = CustomUtils.IntInValidRange(check: userInputInt, max: (int)Actions.GetAllBookTitles, min: (int)Actions.ClearConsole);
+                bool userInputInValidRange = CustomUtils.IntInValidRange(check: userInputInt, max: (int)Actions.GetTotalBooksCount, min: (int)Actions.ClearConsole);
                 if (!userInputInValidRange)
                 {
                     Console.WriteLine("[ALERT]: Enter valid action number from Menu\n");
@@ -84,7 +87,7 @@ namespace LibraryManagementSystem
         }
 
 
-        static void Main(string[] args)
+        static void Main()
         {
             LibManagementSystem libraryManagementSystem = new LibManagementSystem();
 
@@ -142,6 +145,9 @@ namespace LibraryManagementSystem
                     case (int)Actions.GetAllBookTitles:
                         libraryManagementSystem.ConsoleAllBookTitles();
                         break;
+                    case (int)Actions.GetTotalBooksCount:
+                        Console.WriteLine($"System's total books count: {libraryManagementSystem.TotalBooksCount}");
+                        break;
                     default:
                         Console.WriteLine("[ERROR]: Something went wrong while choosing menu");
                         break;
@@ -149,18 +155,6 @@ namespace LibraryManagementSystem
                 Console.WriteLine();
 
             }
-
-            // logging system details
-            Console.WriteLine("\n\n============== SYSTEM DETAILS ===================");
-            Console.WriteLine($"Total books = {PhysicalBook.TotalPhysicalBooks + EBook.TotalEBooks}");
-
-            Console.WriteLine($"Physical Books:\n" +
-                $"\tTotal = {PhysicalBook.TotalPhysicalBooks}\n" +
-                $"\tTotal borrowed = {PhysicalBook.TotalBorrowedPhysicalBooks}");
-
-            Console.WriteLine($"EBooks:\n" +
-                $"\tTotal = {EBook.TotalEBooks}\n" +
-                $"\tTotal borrowed = {EBook.TotalBorrowedEBooks}");
 
             Console.ReadLine();
         }

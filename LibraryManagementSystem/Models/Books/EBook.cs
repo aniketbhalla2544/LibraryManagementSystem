@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using LibraryManagementSystem.Utils;
 
 namespace LibraryManagementSystem.Models.Books
@@ -8,13 +6,10 @@ namespace LibraryManagementSystem.Models.Books
     internal class EBook : Book
     {
         string _downloadLink = string.Empty;
-        public static long TotalEBooks = 0;
-        public static long TotalBorrowedEBooks = 0;
-
+        
         public EBook(string title, string author, string downloadLink) : base(title, author, BOOK_TYPE_EBOOK)
         {
             DownloadLink = downloadLink;
-            TotalEBooks++;
         }
 
         // class props
@@ -25,18 +20,6 @@ namespace LibraryManagementSystem.Models.Books
         {
             return base.ToString() +
                 $"\n\tdownload link: {DownloadLink}";
-        }
-
-        public override void BorrowBook()
-        {
-            base.BorrowBook();
-            TotalBorrowedEBooks++;
-        }
-
-        public override void ReturnBook()
-        {
-            base.ReturnBook();
-            TotalBorrowedEBooks--;
         }
 
         static string ValidateURL(string url)

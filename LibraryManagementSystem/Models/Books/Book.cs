@@ -48,9 +48,6 @@ namespace LibraryManagementSystem.Models.Books
                 $"\n\ttype: {Type}";
         }
 
-        public virtual void BorrowBook() => IsBorrowed = true;
-
-        public virtual void ReturnBook() => IsBorrowed = false;
 
         void IntializeBookObject()
         {

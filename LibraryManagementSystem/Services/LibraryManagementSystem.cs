@@ -31,6 +31,7 @@ namespace LibraryManagementSystem.Services
                 return _allBookTitlesList;
             }
         }
+        public long TotalBooksCount { get => PhysicalBooks.Count + EBooks.Count; }
 
         public LibManagementSystem()
         {
@@ -48,6 +49,8 @@ namespace LibraryManagementSystem.Services
                 PhysicalBooks.Add(new PhysicalBook(title: $"Physical Book {i}", author: $"author{i}", shelfLocation: $"a{i}"));
             }
         }
+
+
 
         //methods
         public void CreatePhysicalBook()
@@ -74,7 +77,7 @@ namespace LibraryManagementSystem.Services
                 return;
             }
 
-             PhysicalBook newPhysicalBook = new PhysicalBook(title: bookTitle, author: author, shelfLocation: shelfLocation);
+            PhysicalBook newPhysicalBook = new PhysicalBook(title: bookTitle, author: author, shelfLocation: shelfLocation);
 
             PhysicalBooks.Add(newPhysicalBook);
 
