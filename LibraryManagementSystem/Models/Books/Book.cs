@@ -3,34 +3,29 @@ using LibraryManagementSystem.Utils;
 
 namespace LibraryManagementSystem.Models.Books
 {
-    internal class Book
+    internal abstract class Book
     {
-        protected const string NOT_ASSIGNED = "Not Assigned";
-
-        protected const string BOOK_TYPE_PHYSICAL = "Physical Book";
-        protected const string BOOK_TYPE_EBOOK = "E Book";
-        protected const string BOOK_TYPE_NOT_ASSIGNED = NOT_ASSIGNED;
-
-        string _bookId;
-        string _title = NOT_ASSIGNED;
-        string _author = NOT_ASSIGNED;
-        string _ISBN = NOT_ASSIGNED; // 13 digit unique number
-        bool _isBorrowed = false;
-        string _type = BOOK_TYPE_NOT_ASSIGNED;
-
-        public Book(string title, string author)
+        public enum BookType
         {
-            IntializeBookObject();
-            Title = title;
-            Author = author;
+            None = -1,
+            Physical,
+            Ebook
         }
 
-        protected Book(string title, string author, string type)
+        string _bookId;
+        string _title = string.Empty;
+        string _author = string.Empty;
+        string _ISBN = string.Empty; // 13 digit unique number
+        bool _isBorrowed = false;
+        BookType _type = BookType.None;
+
+        protected Book(string title, string author, BookType type)
         {
-            IntializeBookObject();
+            BookId = CustomUtils.GenerateUniqueID(0, 8);
+            ISBN = CustomUtils.GenerateUniqueID();
             Title = title;
             Author = author;
-            Type = FormatBookType(type);
+            Type = type;
         }
 
         public string BookId { get => _bookId; protected set => _bookId = !string.IsNullOrEmpty(value) ? value : _bookId; }
@@ -38,7 +33,16 @@ namespace LibraryManagementSystem.Models.Books
         public string Author { get => _author; protected set => _author = !string.IsNullOrEmpty(value) ? value : _author; }
         public string ISBN { get => _ISBN; protected set => _ISBN = !string.IsNullOrEmpty(value) ? value : _ISBN; }
         public bool IsBorrowed { get => _isBorrowed; set { _isBorrowed = value; } }
-        public string Type { get => _type; protected set => _type = IsValidBookType(value) ? FormatBookType(value) : BOOK_TYPE_NOT_ASSIGNED; }
+        public BookType Type
+        {
+            get => _type;
+            protected set
+            {
+                if (value.Equals(BookType.None))
+                    throw new ArgumentException("Book cann't be created with type 'None'");
+                _type = value;
+            }
+        }
 
 
         public override string ToString()
@@ -46,33 +50,6 @@ namespace LibraryManagementSystem.Models.Books
             return $"Book details\n\tbook id: '{BookId}',\n\ttitle: '{Title}'," +
                 $"\n\tauthor: '{Author}',\n\tISBN: '{ISBN}',\n\tis borrowed: {IsBorrowed}," +
                 $"\n\ttype: {Type}";
-        }
-
-
-        void IntializeBookObject()
-        {
-            BookId = CustomUtils.GenerateUniqueID(0, 8);
-            ISBN = CustomUtils.GenerateUniqueID();
-        }
-
-        protected bool IsValidBookType(string value)
-        {
-            if (string.IsNullOrEmpty(value)) return false;
-
-            string _formattedValue = value.Trim().ToLower();
-
-            return _formattedValue.Equals(BOOK_TYPE_PHYSICAL.ToLower()) || _formattedValue.Equals(BOOK_TYPE_EBOOK.ToLower());
-        }
-
-        string FormatBookType(string value)
-        {
-            if (string.IsNullOrEmpty(value) || !IsValidBookType(value))
-                throw new ArgumentException("Cannot format invalid book type value");
-
-            string _formattedValue = value.Trim().ToLower();
-            bool isPhysicalBookType = _formattedValue.Equals(BOOK_TYPE_PHYSICAL.ToLower());
-
-            return isPhysicalBookType ? BOOK_TYPE_PHYSICAL : BOOK_TYPE_EBOOK;
         }
     }
 }

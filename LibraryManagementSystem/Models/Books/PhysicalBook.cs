@@ -4,7 +4,7 @@
     {
         public string ShelfLocation { get; set; }
 
-        public PhysicalBook(string title, string author, string shelfLocation) : base(title, author, BOOK_TYPE_PHYSICAL)
+        public PhysicalBook(string title, string author, string shelfLocation) : base(title, author, BookType.Physical)
         {
             ShelfLocation = shelfLocation;
         }

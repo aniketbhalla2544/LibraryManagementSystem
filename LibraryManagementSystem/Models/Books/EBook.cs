@@ -7,7 +7,7 @@ namespace LibraryManagementSystem.Models.Books
     {
         string _downloadLink = string.Empty;
         
-        public EBook(string title, string author, string downloadLink) : base(title, author, BOOK_TYPE_EBOOK)
+        public EBook(string title, string author, string downloadLink) : base(title, author, BookType.Ebook)
         {
             DownloadLink = downloadLink;
         }
