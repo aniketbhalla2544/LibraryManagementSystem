@@ -1,5 +1,4 @@
 ﻿using System;
-using LibraryManagementSystem.Models.Books;
 using LibraryManagementSystem.Services;
 using LibraryManagementSystem.Utils;
 
@@ -25,6 +24,12 @@ namespace LibraryManagementSystem
             GetTotalBorrowedEBooks,
             GetAllBookTitles,
             GetTotalBooksCount,
+            RegisterStudentMember,
+            RegisterTeacherMember,
+            GetTotalMembersCount,
+            GetTotalTeacherMembersCount,
+            GetTotalStudentMembersCount
+
         }
 
         static void DisplayMenu()
@@ -46,6 +51,12 @@ namespace LibraryManagementSystem
             Console.WriteLine("Enter 10 to get total borrowed e-books");
             Console.WriteLine("Enter 11 to get all book titles");
             Console.WriteLine("Enter 12 to get system's total books count");
+            Console.WriteLine("Enter 13 to register a student member");
+            Console.WriteLine("Enter 14 to register a teacher member");
+            Console.WriteLine("Enter 15 to get total members count");
+            Console.WriteLine("Enter 16 to get total teacher members count");
+            Console.WriteLine("Enter 17 to get total student members count");
+
             Console.Write("\n\n");
         }
 
@@ -72,7 +83,7 @@ namespace LibraryManagementSystem
                 //Console.WriteLine($"total actions: {totalActions}");
 
                 // checking if user input integer is in valid range of "Actions" numbers
-                bool userInputInValidRange = CustomUtils.IntInValidRange(check: userInputInt, max: (int)Actions.GetTotalBooksCount, min: (int)Actions.ClearConsole);
+                bool userInputInValidRange = CustomUtils.IntInValidRange(check: userInputInt, max: (int)Actions.GetTotalStudentMembersCount, min: (int)Actions.ClearConsole);
                 if (!userInputInValidRange)
                 {
                     Console.WriteLine("[ALERT]: Enter valid action number from Menu\n");
@@ -89,6 +100,7 @@ namespace LibraryManagementSystem
 
         static void Main()
         {
+
             LibManagementSystem libraryManagementSystem = new LibManagementSystem();
 
             Console.WriteLine("============= WELCOME TO LIBRARY MANAGEMENT SYSTEM ==============\n");
@@ -147,6 +159,21 @@ namespace LibraryManagementSystem
                         break;
                     case (int)Actions.GetTotalBooksCount:
                         Console.WriteLine($"System's total books count: {libraryManagementSystem.TotalBooksCount}");
+                        break;
+                    case (int)Actions.RegisterStudentMember:
+                        libraryManagementSystem.RegisterStudentMember();
+                        break;
+                    case (int)Actions.RegisterTeacherMember:
+                        libraryManagementSystem.RegisterTeacherMember();
+                        break;
+                    case (int)Actions.GetTotalMembersCount:
+                        Console.WriteLine($"Total members count: {libraryManagementSystem.TotalMembersCount}");
+                        break;
+                    case (int)Actions.GetTotalTeacherMembersCount:
+                        Console.WriteLine($"Total members count: {libraryManagementSystem.TotalTeacherMembersCount}");
+                        break;
+                    case (int)Actions.GetTotalStudentMembersCount:
+                        Console.WriteLine($"Total members count: {libraryManagementSystem.TotalStudentMembersCount}");
                         break;
                     default:
                         Console.WriteLine("[ERROR]: Something went wrong while choosing menu");

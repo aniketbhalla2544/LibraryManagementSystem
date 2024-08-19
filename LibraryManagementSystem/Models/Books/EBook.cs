@@ -6,16 +6,14 @@ namespace LibraryManagementSystem.Models.Books
     internal class EBook : Book
     {
         string _downloadLink = string.Empty;
-        
+        public string DownloadLink { get => _downloadLink; protected set => _downloadLink = ValidateURL(value); }
+
         public EBook(string title, string author, string downloadLink) : base(title, author, BookType.Ebook)
         {
             DownloadLink = downloadLink;
         }
 
-        // class props
-        public string DownloadLink { get => _downloadLink; protected set => _downloadLink = ValidateURL(value); }
 
-        // methods
         public override string ToString()
         {
             return base.ToString() +

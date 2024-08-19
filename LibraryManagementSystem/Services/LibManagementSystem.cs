@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LibraryManagementSystem.Models.Books;
+using LibraryManagementSystem.Models.Member;
 
 namespace LibraryManagementSystem.Services
 {
@@ -14,9 +15,19 @@ namespace LibraryManagementSystem.Services
         const string EBOOK_BORROWED_ACTION_TEXT = "[ACTION]: Borrow Ebook";
         const string EBOOK_RETURNED_ACTION_TEXT = "[ACTION]: Return Ebook";
 
+        const string REGISTER_STUDENT_MEMBER_TEXT = "[ACTION]: Register Student Member";
+        const string REGISTER_TEACHER_MEMBER_TEXT = "[ACTION]: Register Teacher Member";
+
         // class props
-        public List<PhysicalBook> PhysicalBooks { get; private set; }
-        public List<EBook> EBooks { get; private set; }
+        public List<StudentMember> StudentMembers { get; private set; } = new List<StudentMember>();
+        public List<TeacherMember> TeacherMembers { get; private set; } = new List<TeacherMember>();
+        public List<PhysicalBook> PhysicalBooks { get; private set; } = new List<PhysicalBook>();
+        public List<EBook> EBooks { get; private set; } = new List<EBook>();
+
+        // drived class props
+        public long TotalStudentMembersCount { get => StudentMembers.Count; }
+        public long TotalTeacherMembersCount { get => TeacherMembers.Count; }
+        public long TotalMembersCount { get => TotalStudentMembersCount + TotalTeacherMembersCount; }
         public long TotalBorrowedPhysicalBooks { get => PhysicalBooks.FindAll(book => book.IsBorrowed).Count; }
         public long TotalBorrowedEBooks { get => EBooks.FindAll(book => book.IsBorrowed).Count; }
         public List<string> PhysicalBookTitlesList { get => PhysicalBooks.ConvertAll(book => book.Title); }
@@ -35,9 +46,6 @@ namespace LibraryManagementSystem.Services
 
         public LibManagementSystem()
         {
-            PhysicalBooks = new List<PhysicalBook>();
-            EBooks = new List<EBook>();
-
             // adding demo physical and online books
             // delete them afterwards
             for (int i = 1; i <= 3; i++)
@@ -50,9 +58,49 @@ namespace LibraryManagementSystem.Services
             }
         }
 
-
-
         //methods
+        public void RegisterStudentMember()
+        {
+            Console.WriteLine($"\n{REGISTER_STUDENT_MEMBER_TEXT}");
+
+            Console.Write("Enter first name: ");
+            string firstName = Console.ReadLine();
+
+            Console.Write("Enter last name: ");
+            string lastName = Console.ReadLine();
+
+            Console.Write("Enter email: ");
+            string email = Console.ReadLine();
+
+            //string lastName, string email
+            StudentMember newMember = new StudentMember(firstName, lastName, email);
+            StudentMembers.Add(newMember);
+
+            Console.WriteLine("[SUCCESS]: Student member successfully registered with following details: !!");
+            Console.WriteLine($"{newMember}");
+        }
+
+        public void RegisterTeacherMember()
+        {
+            Console.WriteLine($"\n{REGISTER_TEACHER_MEMBER_TEXT}");
+
+            Console.Write("Enter first name: ");
+            string firstName = Console.ReadLine();
+
+            Console.Write("Enter last name: ");
+            string lastName = Console.ReadLine();
+
+            Console.Write("Enter email: ");
+            string email = Console.ReadLine();
+
+            //string lastName, string email
+            TeacherMember newMember = new TeacherMember(firstName, lastName, email);
+            TeacherMembers.Add(newMember);
+
+            Console.WriteLine("[SUCCESS]: Student member successfully registered with following details: !!");
+            Console.WriteLine($"{newMember}");
+        }
+
         public void CreatePhysicalBook()
         {
             Console.WriteLine($"\n{PHYSICAL_BOOK_CREATED_ACTION_TEXT}");

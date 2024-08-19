@@ -43,14 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IMember.cs" />
     <Compile Include="Models\Books\Book.cs" />
     <Compile Include="Models\Books\EBook.cs" />
     <Compile Include="Models\Books\PhysicalBook.cs" />
-    <Compile Include="Models\Member.cs" />
+    <Compile Include="Models\Member\Member.cs" />
+    <Compile Include="Models\Member\StudentMember.cs" />
+    <Compile Include="Models\Member\TeacherMember.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\LibraryManagementSystem.cs" />
+    <Compile Include="Services\LibManagementSystem.cs" />
     <Compile Include="Utils\CustomUtils.cs" />
+    <Compile Include="Utils\Validator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

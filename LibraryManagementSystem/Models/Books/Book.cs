@@ -12,26 +12,17 @@ namespace LibraryManagementSystem.Models.Books
             Ebook
         }
 
-        string _bookId;
+        readonly string _bookId = CustomUtils.GenerateUniqueID(0, 8);
+        readonly string _ISBN = CustomUtils.GenerateUniqueID(); // 13 digit unique number
         string _title = string.Empty;
         string _author = string.Empty;
-        string _ISBN = string.Empty; // 13 digit unique number
         bool _isBorrowed = false;
         BookType _type = BookType.None;
 
-        protected Book(string title, string author, BookType type)
-        {
-            BookId = CustomUtils.GenerateUniqueID(0, 8);
-            ISBN = CustomUtils.GenerateUniqueID();
-            Title = title;
-            Author = author;
-            Type = type;
-        }
-
-        public string BookId { get => _bookId; protected set => _bookId = !string.IsNullOrEmpty(value) ? value : _bookId; }
+        public string BookId { get => _bookId; }
         public string Title { get => _title; protected set => _title = !string.IsNullOrEmpty(value) ? value : _title; }
         public string Author { get => _author; protected set => _author = !string.IsNullOrEmpty(value) ? value : _author; }
-        public string ISBN { get => _ISBN; protected set => _ISBN = !string.IsNullOrEmpty(value) ? value : _ISBN; }
+        public string ISBN { get => _ISBN; }
         public bool IsBorrowed { get => _isBorrowed; set { _isBorrowed = value; } }
         public BookType Type
         {
@@ -43,7 +34,12 @@ namespace LibraryManagementSystem.Models.Books
                 _type = value;
             }
         }
-
+        protected Book(string title, string author, BookType type)
+        {
+            Title = title;
+            Author = author;
+            Type = type;
+        }
 
         public override string ToString()
         {

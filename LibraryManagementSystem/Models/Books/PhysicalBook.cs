@@ -9,7 +9,6 @@
             ShelfLocation = shelfLocation;
         }
 
-        // methods
         public override string ToString()
         {
             return base.ToString() +
