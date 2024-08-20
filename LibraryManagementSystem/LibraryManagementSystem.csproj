@@ -53,6 +53,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\LibManagementSystem.cs" />
+    <Compile Include="Services\MenuService.cs" />
     <Compile Include="Utils\CustomUtils.cs" />
     <Compile Include="Utils\Validator.cs" />
   </ItemGroup>
