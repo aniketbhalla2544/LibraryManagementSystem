@@ -17,5 +17,9 @@ namespace LibraryManagementSystem.Models.Member
 
         }
 
+        public override string ToString()
+        {
+            return base.ToString()+ $"\n\tstudent id: '{StudentId}'";
+        }
     }
 }

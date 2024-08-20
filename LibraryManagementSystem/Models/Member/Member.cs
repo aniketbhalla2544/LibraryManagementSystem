@@ -10,7 +10,6 @@ namespace LibraryManagementSystem.Models.Member
     {
         public enum MemberType
         {
-            None,
             Student,
             Teacher
         }
@@ -21,21 +20,11 @@ namespace LibraryManagementSystem.Models.Member
         string _firstName = string.Empty;
         string _lastName = string.Empty;
         string _email = string.Empty; // unique prop
-        MemberType _type = MemberType.None;
+        MemberType _type;
 
         protected HashSet<string> UniqueBorrowedBookIds { get; set; } = new HashSet<string>();
-
         public readonly static List<string> MemberTypeNames = Enum.GetNames(typeof(MemberType)).ToList();
-        public MemberType Type
-        {
-            get => _type;
-            protected set
-            {
-                if (value.Equals(MemberType.None))
-                    throw new ArgumentException("Can't set member type to 'None' while creating member");
-                _type = value;
-            }
-        }
+        public MemberType Type { get => _type; protected set => _type = value; }
         public string Name { get => $"{FirstName} {LastName}"; }
         public string MemberId { get => _memberId; }
         public string FirstName
@@ -69,18 +58,6 @@ namespace LibraryManagementSystem.Models.Member
             Type = type;
         }
 
-        public static bool IsValidMemberType(string t)
-        {
-            bool isValid = false;
-
-            if (string.IsNullOrEmpty(t) || string.IsNullOrWhiteSpace(t))
-                return isValid;
-
-            t = t.Trim();
-
-            return MemberTypeNames.Any(type => type.Equals(t, StringComparison.OrdinalIgnoreCase));
-        }
-
         public override bool Equals(object obj) => obj is Member member && Email.Equals(member.Email.Trim(), StringComparison.OrdinalIgnoreCase);
 
         public override int GetHashCode() => Email.GetHashCode();
@@ -92,6 +69,5 @@ namespace LibraryManagementSystem.Models.Member
                 $"\n\temail: '{Email}'" +
                 $"\n\ttype: '{Type}'";
         }
-
     }
 }

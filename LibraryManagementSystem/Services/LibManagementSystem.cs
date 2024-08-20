@@ -40,14 +40,14 @@ namespace LibraryManagementSystem.Services
         {
             // adding demo physical and online books
             // delete them afterwards
-            for (int i = 1; i <= 3; i++)
-            {
-                EBooks.Add(new EBook(title: $"E-Book {i}", author: $"author{i}", downloadLink: $"https://bookstore.com/e-book/{i}"));
-            }
-            for (int i = 1; i <= 3; i++)
-            {
-                PhysicalBooks.Add(new PhysicalBook(title: $"Physical Book {i}", author: $"author{i}", shelfLocation: $"a{i}"));
-            }
+            //for (int i = 1; i <= 3; i++)
+            //{
+            //    EBooks.Add(new EBook(title: $"E-Book {i}", author: $"author{i}", downloadLink: $"https://bookstore.com/e-book/{i}"));
+            //}
+            //for (int i = 1; i <= 3; i++)
+            //{
+            //    PhysicalBooks.Add(new PhysicalBook(title: $"Physical Book {i}", author: $"author{i}", shelfLocation: $"a{i}"));
+            //}
         }
 
         //methods
@@ -63,49 +63,56 @@ namespace LibraryManagementSystem.Services
             Console.Write("Enter email: ");
             string email = Console.ReadLine();
 
-            Console.Write("Enter member type, 'Teacher' or 'Student': ");
-            string selectedOption = MenuSelector.SelectOption(Member.MemberTypeNames);
-            Console.WriteLine($"selectedOption: {selectedOption}");
-
-
-            return;
-
-            string memberType = Console.ReadLine();
-            bool isValidMemberType = Member.IsValidMemberType(memberType.Trim().ToLower());
-            if (!isValidMemberType)
+            // email validation
+            if (!Validator.IsValidEmail(email))
             {
-                Console.WriteLine($"[INVALID INPUT]: Invalid member type entered");
+                Console.WriteLine($"[ERROR]: Received invalid email = '{email}' while registering member in the system.");
                 return;
             }
-            Console.WriteLine("sucess!!");
 
-            //string lastName, string email
-            StudentMember newMember = new StudentMember(firstName, lastName, email);
-            StudentMembers.Add(newMember);
+            // taking valid member type input and validating it
+            string memberTypeInput = MenuSelector.SelectOption(Member.MemberTypeNames, message: "Use the arrow keys to navigate and press Enter to select member type:");
+            bool isValidMemberType = Enum.TryParse(memberTypeInput, true, out Member.MemberType memberType);
+            if (!isValidMemberType)
+            {
+                Console.WriteLine("[ERROR]: Received invalid member type while registering member in the system.");
+                return;
+            }
 
-            Console.WriteLine("[SUCCESS]: Student member successfully registered with following details: !!");
-            Console.WriteLine($"{newMember}");
-        }
+            // registering members according to valid member type input
+            if (memberType == Member.MemberType.Student)
+            {
+                StudentMember newMember = new StudentMember(firstName, lastName, email);
+                bool memberRegistered = Members.Add(newMember);
+                if (!memberRegistered)
+                {
+                    Console.WriteLine($"[ALERT]: Student member with email = '{email.Trim().ToLower()}' has already been registered in the system!!");
+                    return;
+                }
 
-        // done
-        public void RegisterTeacherMember()
-        {
+                Console.WriteLine("[SUCCESS]: Student member successfully registered with following details: !!");
+                Console.WriteLine(newMember);
+                return;
+            }
+            else if (memberType == Member.MemberType.Teacher)
+            {
+                TeacherMember newMember = new TeacherMember(firstName, lastName, email);
+                bool memberRegistered = Members.Add(newMember);
+                if (!memberRegistered)
+                {
+                    Console.WriteLine($"[ALERT]: Teacher member with email = '{email.Trim().ToLower()}' has already been registered in the system!!");
+                    return;
+                }
 
-            Console.Write("Enter first name: ");
-            string firstName = Console.ReadLine();
-
-            Console.Write("Enter last name: ");
-            string lastName = Console.ReadLine();
-
-            Console.Write("Enter email: ");
-            string email = Console.ReadLine();
-
-            //string lastName, string email
-            TeacherMember newMember = new TeacherMember(firstName, lastName, email);
-            TeacherMembers.Add(newMember);
-
-            Console.WriteLine("[SUCCESS]: Student member successfully registered with following details: !!");
-            Console.WriteLine($"{newMember}");
+                Console.WriteLine("[SUCCESS]: Teacher member successfully registered with following details: !!");
+                Console.WriteLine(newMember);
+                return;
+            }
+            else
+            {
+                Console.WriteLine("[ERROR]: Received invalid member type while registering member in the system.");
+                return;
+            }
         }
 
         // done
