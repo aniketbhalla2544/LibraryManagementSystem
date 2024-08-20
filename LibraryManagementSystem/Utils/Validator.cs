@@ -9,7 +9,6 @@ namespace LibraryManagementSystem.Utils
 {
     internal static class Validator
     {
-
         public static bool IsValidEmail(string email)
         {
             bool isValid = false;

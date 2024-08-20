@@ -58,6 +58,7 @@ namespace LibraryManagementSystem.Models.Member
             Type = type;
         }
 
+        // uniqueness = email
         public override bool Equals(object obj) => obj is Member member && Email.Equals(member.Email.Trim(), StringComparison.OrdinalIgnoreCase);
 
         public override int GetHashCode() => Email.GetHashCode();

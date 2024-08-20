@@ -116,6 +116,11 @@ namespace LibraryManagementSystem.Services
         }
 
         // done
+        public void AddBook()
+        {
+
+        }
+
         public void CreatePhysicalBook()
         {
             Console.Write("Enter book title: ");
