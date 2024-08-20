@@ -9,6 +9,8 @@
             ShelfLocation = shelfLocation;
         }
 
+        public int CalculatePhysicalBookWeight() => 12;
+       
         public override string ToString()
         {
             return base.ToString() +

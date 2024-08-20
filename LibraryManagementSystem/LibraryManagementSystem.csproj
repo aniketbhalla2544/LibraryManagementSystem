@@ -55,6 +55,7 @@
     <Compile Include="Services\LibManagementSystem.cs" />
     <Compile Include="Services\MenuService.cs" />
     <Compile Include="Utils\CustomUtils.cs" />
+    <Compile Include="Utils\MenuSelector.cs" />
     <Compile Include="Utils\Validator.cs" />
   </ItemGroup>
   <ItemGroup>

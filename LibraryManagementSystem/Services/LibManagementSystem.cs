@@ -1,30 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LibraryManagementSystem.Models.Books;
 using LibraryManagementSystem.Models.Member;
+using LibraryManagementSystem.Utils;
 
 namespace LibraryManagementSystem.Services
 {
     internal class LibManagementSystem
     {
-        const string PHYSICAL_BOOK_CREATED_ACTION_TEXT = "[ACTION]: Create Physical Book";
-        const string PHYSICAL_BOOK_BORROWED_ACTION_TEXT = "[ACTION]: Borrow Physical book";
-        const string PHYSICAL_BOOK_RETURNED_ACTION_TEXT = "[ACTION]: Return Physical book";
-
-        const string EBOOK_CREATED_ACTION_TEXT = "[ACTION]: Create Ebook";
-        const string EBOOK_BORROWED_ACTION_TEXT = "[ACTION]: Borrow Ebook";
-        const string EBOOK_RETURNED_ACTION_TEXT = "[ACTION]: Return Ebook";
-
-        const string REGISTER_STUDENT_MEMBER_TEXT = "[ACTION]: Register Student Member";
-        const string REGISTER_TEACHER_MEMBER_TEXT = "[ACTION]: Register Teacher Member";
-
-        // class props
-        public List<StudentMember> StudentMembers { get; private set; } = new List<StudentMember>();
-        public List<TeacherMember> TeacherMembers { get; private set; } = new List<TeacherMember>();
-        public List<PhysicalBook> PhysicalBooks { get; private set; } = new List<PhysicalBook>();
-        public List<EBook> EBooks { get; private set; } = new List<EBook>();
+        public HashSet<Member> Members { get; private set; } = new HashSet<Member>();
+        public HashSet<Book> Books { get; private set; } = new HashSet<Book>();
 
         // drived class props
+        public List<StudentMember> StudentMembers { get => Members.OfType<StudentMember>().ToList(); }
+        public List<TeacherMember> TeacherMembers { get => Members.OfType<TeacherMember>().ToList(); }
+        public List<PhysicalBook> PhysicalBooks { get => Books.OfType<PhysicalBook>().ToList(); }
+        public List<EBook> EBooks { get => Books.OfType<EBook>().ToList(); }
         public long TotalStudentMembersCount { get => StudentMembers.Count; }
         public long TotalTeacherMembersCount { get => TeacherMembers.Count; }
         public long TotalMembersCount { get => TotalStudentMembersCount + TotalTeacherMembersCount; }
@@ -59,10 +51,9 @@ namespace LibraryManagementSystem.Services
         }
 
         //methods
-        public void RegisterStudentMember()
+        // done
+        public void RegisterMember()
         {
-            Console.WriteLine($"\n{REGISTER_STUDENT_MEMBER_TEXT}");
-
             Console.Write("Enter first name: ");
             string firstName = Console.ReadLine();
 
@@ -72,6 +63,22 @@ namespace LibraryManagementSystem.Services
             Console.Write("Enter email: ");
             string email = Console.ReadLine();
 
+            Console.Write("Enter member type, 'Teacher' or 'Student': ");
+            string selectedOption = MenuSelector.SelectOption(Member.MemberTypeNames);
+            Console.WriteLine($"selectedOption: {selectedOption}");
+
+
+            return;
+
+            string memberType = Console.ReadLine();
+            bool isValidMemberType = Member.IsValidMemberType(memberType.Trim().ToLower());
+            if (!isValidMemberType)
+            {
+                Console.WriteLine($"[INVALID INPUT]: Invalid member type entered");
+                return;
+            }
+            Console.WriteLine("sucess!!");
+
             //string lastName, string email
             StudentMember newMember = new StudentMember(firstName, lastName, email);
             StudentMembers.Add(newMember);
@@ -80,9 +87,9 @@ namespace LibraryManagementSystem.Services
             Console.WriteLine($"{newMember}");
         }
 
+        // done
         public void RegisterTeacherMember()
         {
-            Console.WriteLine($"\n{REGISTER_TEACHER_MEMBER_TEXT}");
 
             Console.Write("Enter first name: ");
             string firstName = Console.ReadLine();
@@ -101,10 +108,9 @@ namespace LibraryManagementSystem.Services
             Console.WriteLine($"{newMember}");
         }
 
+        // done
         public void CreatePhysicalBook()
         {
-            Console.WriteLine($"\n{PHYSICAL_BOOK_CREATED_ACTION_TEXT}");
-
             Console.Write("Enter book title: ");
             string bookTitle = Console.ReadLine().Trim();
 
@@ -130,6 +136,25 @@ namespace LibraryManagementSystem.Services
             PhysicalBooks.Add(newPhysicalBook);
 
             Console.WriteLine($"\n{newPhysicalBook}");
+        }
+
+        // done
+        public void CreateEBook()
+        {
+            Console.Write("Enter book title: ");
+            string title = Console.ReadLine();
+
+            Console.Write("Enter book author: ");
+            string author = Console.ReadLine();
+
+            Console.Write("Enter book's downloadLink: ");
+            string url = Console.ReadLine();
+
+            EBook newEBook = new EBook(title: title, author: author, downloadLink: url);
+
+            EBooks.Add(newEBook);
+
+            Console.WriteLine($"\n{newEBook}");
         }
 
         public void BorrowPhysicalBook()
@@ -161,26 +186,6 @@ namespace LibraryManagementSystem.Services
         public void ReturnPhysicalBook()
         {
 
-        }
-
-        public void CreateEBook()
-        {
-            Console.WriteLine($"\n{EBOOK_CREATED_ACTION_TEXT}");
-
-            Console.Write("Enter book title: ");
-            string title = Console.ReadLine();
-
-            Console.Write("Enter book author: ");
-            string author = Console.ReadLine();
-
-            Console.Write("Enter book's downloadLink: ");
-            string url = Console.ReadLine();
-
-            EBook newEBook = new EBook(title: title, author: author, downloadLink: url);
-
-            EBooks.Add(newEBook);
-
-            Console.WriteLine($"\n{newEBook}");
         }
 
         public void BorrowEBook()

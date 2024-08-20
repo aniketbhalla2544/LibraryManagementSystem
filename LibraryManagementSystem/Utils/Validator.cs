@@ -18,7 +18,7 @@ namespace LibraryManagementSystem.Utils
             if (string.IsNullOrEmpty(email) || string.IsNullOrWhiteSpace(email))
                 return isValid;
 
-            string _email = email.Trim();
+            email = email.Trim().ToLower();
 
             const string EMAIL_VALIDATION_REGEX_PATTERN = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             isValid = Regex.IsMatch(email, EMAIL_VALIDATION_REGEX_PATTERN);

@@ -1,14 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LibraryManagementSystem.Utils;
 
 namespace LibraryManagementSystem.Services
 {
     internal static class MenuService
     {
+        const string PHYSICAL_BOOK_CREATED_ACTION_TEXT = "[ACTION]: Create Physical Book";
+        const string PHYSICAL_BOOK_BORROWED_ACTION_TEXT = "[ACTION]: Borrow Physical book";
+        const string PHYSICAL_BOOK_RETURNED_ACTION_TEXT = "[ACTION]: Return Physical book";
+
+        const string EBOOK_CREATED_ACTION_TEXT = "[ACTION]: Create Ebook";
+        const string EBOOK_BORROWED_ACTION_TEXT = "[ACTION]: Borrow Ebook";
+        const string EBOOK_RETURNED_ACTION_TEXT = "[ACTION]: Return Ebook";
+
+        const string REGISTER_MEMBER_TEXT = "[ACTION]: Register Member";
 
         // update min and max of IntInValidRange() upon updating Actions
         enum Actions
@@ -28,12 +33,10 @@ namespace LibraryManagementSystem.Services
             GetTotalBorrowedEBooks,
             GetAllBookTitles,
             GetTotalBooksCount,
-            RegisterStudentMember,
-            RegisterTeacherMember,
+            RegisterMember,
             GetTotalMembersCount,
             GetTotalTeacherMembersCount,
             GetTotalStudentMembersCount
-
         }
 
         static void DisplayMenu()
@@ -55,11 +58,10 @@ namespace LibraryManagementSystem.Services
             Console.WriteLine("Enter 10 to get total borrowed e-books");
             Console.WriteLine("Enter 11 to get all book titles");
             Console.WriteLine("Enter 12 to get system's total books count");
-            Console.WriteLine("Enter 13 to register a student member");
-            Console.WriteLine("Enter 14 to register a teacher member");
-            Console.WriteLine("Enter 15 to get total members count");
-            Console.WriteLine("Enter 16 to get total teacher members count");
-            Console.WriteLine("Enter 17 to get total student members count");
+            Console.WriteLine("Enter 13 to register a member");
+            Console.WriteLine("Enter 14 to get total members count");
+            Console.WriteLine("Enter 15 to get total teacher members count");
+            Console.WriteLine("Enter 16 to get total student members count");
 
             Console.Write("\n\n");
         }
@@ -128,6 +130,7 @@ namespace LibraryManagementSystem.Services
                         DisplayMenu();
                         continue;
                     case (int)Actions.CreatePhysicalBook:
+                        Console.WriteLine($"\n{PHYSICAL_BOOK_CREATED_ACTION_TEXT}");
                         libraryManagementSystem.CreatePhysicalBook();
                         break;
                     case (int)Actions.BorrowPhysicalBook:
@@ -137,6 +140,7 @@ namespace LibraryManagementSystem.Services
                         libraryManagementSystem.ReturnPhysicalBook();
                         break;
                     case (int)Actions.CreateEBook:
+                        Console.WriteLine($"\n{EBOOK_CREATED_ACTION_TEXT}");
                         libraryManagementSystem.CreateEBook();
                         break;
                     case (int)Actions.BorrowEBook:
@@ -163,11 +167,9 @@ namespace LibraryManagementSystem.Services
                     case (int)Actions.GetTotalBooksCount:
                         Console.WriteLine($"System's total books count: {libraryManagementSystem.TotalBooksCount}");
                         break;
-                    case (int)Actions.RegisterStudentMember:
-                        libraryManagementSystem.RegisterStudentMember();
-                        break;
-                    case (int)Actions.RegisterTeacherMember:
-                        libraryManagementSystem.RegisterTeacherMember();
+                    case (int)Actions.RegisterMember:
+                        Console.WriteLine($"\n{REGISTER_MEMBER_TEXT}");
+                        libraryManagementSystem.RegisterMember();
                         break;
                     case (int)Actions.GetTotalMembersCount:
                         Console.WriteLine($"Total members count: {libraryManagementSystem.TotalMembersCount}");

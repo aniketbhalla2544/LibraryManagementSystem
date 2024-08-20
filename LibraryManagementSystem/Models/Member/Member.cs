@@ -5,6 +5,7 @@ using LibraryManagementSystem.Utils;
 
 namespace LibraryManagementSystem.Models.Member
 {
+    // email prop is unique in member type
     internal abstract class Member
     {
         public enum MemberType
@@ -19,10 +20,12 @@ namespace LibraryManagementSystem.Models.Member
         readonly string _memberId = CustomUtils.GenerateUniqueID(0, MEMBER_ID_LENGTH);
         string _firstName = string.Empty;
         string _lastName = string.Empty;
-        string _email = string.Empty;
+        string _email = string.Empty; // unique prop
         MemberType _type = MemberType.None;
 
         protected HashSet<string> UniqueBorrowedBookIds { get; set; } = new HashSet<string>();
+
+        public readonly static List<string> MemberTypeNames = Enum.GetNames(typeof(MemberType)).ToList();
         public MemberType Type
         {
             get => _type;
@@ -45,7 +48,18 @@ namespace LibraryManagementSystem.Models.Member
             get => _lastName;
             protected set => _lastName = !string.IsNullOrWhiteSpace(value) && !string.IsNullOrEmpty(value) ? value : string.Empty;
         }
-        public string Email { get => _email; set => _email = Validator.IsValidEmail(value) ? value.Trim().ToLower() : string.Empty; }
+        // unique prop
+        public string Email
+        {
+            get => _email;
+            private set
+            {
+                if (!Validator.IsValidEmail(value))
+                    throw new ArgumentException($"Can't set an invalid email: '{value}' while creating system member.");
+
+                _email = value.Trim().ToLower();
+            }
+        }
 
         protected Member(string firstName, string lastName, string email, MemberType type)
         {
@@ -55,6 +69,22 @@ namespace LibraryManagementSystem.Models.Member
             Type = type;
         }
 
+        public static bool IsValidMemberType(string t)
+        {
+            bool isValid = false;
+
+            if (string.IsNullOrEmpty(t) || string.IsNullOrWhiteSpace(t))
+                return isValid;
+
+            t = t.Trim();
+
+            return MemberTypeNames.Any(type => type.Equals(t, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public override bool Equals(object obj) => obj is Member member && Email.Equals(member.Email.Trim(), StringComparison.OrdinalIgnoreCase);
+
+        public override int GetHashCode() => Email.GetHashCode();
+
         public override string ToString()
         {
             return $"Member details:\n\tid: '{MemberId}'" +
@@ -62,5 +92,6 @@ namespace LibraryManagementSystem.Models.Member
                 $"\n\temail: '{Email}'" +
                 $"\n\ttype: '{Type}'";
         }
+
     }
 }
