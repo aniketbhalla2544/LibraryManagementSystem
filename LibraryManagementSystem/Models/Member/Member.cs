@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LibraryManagementSystem.Utils;
+using static LibraryManagementSystem.Models.Books.Book;
 
 namespace LibraryManagementSystem.Models.Member
 {
@@ -68,6 +69,13 @@ namespace LibraryManagementSystem.Models.Member
                 $"\n\tname: '{Name}'" +
                 $"\n\temail: '{Email}'" +
                 $"\n\ttype: '{Type}'";
+        }
+        public static bool SelectMemberTypeUsingMenuSelector(out MemberType result, string message = "Use the arrow keys to navigate and press Enter to select member type:")
+        {
+            string selectedMemberTypeInput = MenuSelector.SelectOption(MemberTypeNames, message);
+            bool isValidSelectedMemberType = Enum.TryParse(selectedMemberTypeInput, false, out MemberType validMemberType);
+            result = validMemberType;
+            return isValidSelectedMemberType;
         }
     }
 }

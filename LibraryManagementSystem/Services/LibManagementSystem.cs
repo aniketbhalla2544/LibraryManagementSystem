@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using LibraryManagementSystem.Models.Books;
 using LibraryManagementSystem.Models.Member;
@@ -38,16 +39,6 @@ namespace LibraryManagementSystem.Services
 
         public LibManagementSystem()
         {
-            // adding demo physical and online books
-            // delete them afterwards
-            //for (int i = 1; i <= 3; i++)
-            //{
-            //    EBooks.Add(new EBook(title: $"E-Book {i}", author: $"author{i}", downloadLink: $"https://bookstore.com/e-book/{i}"));
-            //}
-            //for (int i = 1; i <= 3; i++)
-            //{
-            //    PhysicalBooks.Add(new PhysicalBook(title: $"Physical Book {i}", author: $"author{i}", shelfLocation: $"a{i}"));
-            //}
         }
 
         //methods
@@ -90,11 +81,10 @@ namespace LibraryManagementSystem.Services
             }
 
             // taking valid member type input and validating it
-            string memberTypeInput = MenuSelector.SelectOption(Member.MemberTypeNames, message: "Use the arrow keys to navigate and press Enter to select member type:");
-            bool isValidMemberType = Enum.TryParse(memberTypeInput, true, out Member.MemberType memberType);
-            if (!isValidMemberType)
+            bool memberTypeSelection = Member.SelectMemberTypeUsingMenuSelector(out Member.MemberType memberType);
+            if (!memberTypeSelection)
             {
-                Console.WriteLine("[ERROR]: Received invalid member type while registering member in the system.");
+                Console.WriteLine("[ERROR]: Error while selecting member type");
                 return;
             }
 
@@ -105,7 +95,7 @@ namespace LibraryManagementSystem.Services
                 bool memberRegistered = Members.Add(newMember);
                 if (!memberRegistered)
                 {
-                    Console.WriteLine($"[ALERT]: Student member with email = '{email.Trim().ToLower()}' has already been registered in the system!!");
+                    Console.WriteLine($"[ALERT]: member with email = '{email.Trim().ToLower()}' has already been registered in the system!!");
                     return;
                 }
 
@@ -119,7 +109,7 @@ namespace LibraryManagementSystem.Services
                 bool memberRegistered = Members.Add(newMember);
                 if (!memberRegistered)
                 {
-                    Console.WriteLine($"[ALERT]: Teacher member with email = '{email.Trim().ToLower()}' has already been registered in the system!!");
+                    Console.WriteLine($"[ALERT]: member with email = '{email.Trim().ToLower()}' has already been registered in the system!!");
                     return;
                 }
 
@@ -134,6 +124,7 @@ namespace LibraryManagementSystem.Services
             }
         }
 
+        // done
         public void AddBook()
         {
             // book title input
@@ -159,11 +150,11 @@ namespace LibraryManagementSystem.Services
             }
 
             // book type input
-            string selectedBookTypeInput = MenuSelector.SelectOption(Book.BookTypeNames, message: "Use the arrow keys to navigate and press Enter to select book type:");
-            bool isValidBookType = Enum.TryParse(selectedBookTypeInput, out Book.BookType selectedBookType);
-            if (!isValidBookType)
+            bool bookTypeSelectionSuccess = Book.SelectBookTypeUsingMenuSelector(out Book.BookType selectedBookType);
+
+            if (!bookTypeSelectionSuccess)
             {
-                Console.WriteLine("[ERROR]: Received invalid book type while registering member in the system.");
+                Console.WriteLine("[ERROR]: Error while book type selection.");
                 return;
             }
 
@@ -278,6 +269,7 @@ namespace LibraryManagementSystem.Services
 
         }
 
+        // done
         public void ConsoleAllBookTitles()
         {
             if (AllBookTitlesList.Count == 0)

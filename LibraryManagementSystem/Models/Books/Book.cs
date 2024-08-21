@@ -16,7 +16,7 @@ namespace LibraryManagementSystem.Models.Books
 
         readonly string _bookId = CustomUtils.GenerateUniqueID(0, 8);
         readonly string _ISBN = CustomUtils.GenerateUniqueID(); // 13 digit unique number
-        string _title = string.Empty; 
+        string _title = string.Empty;
         string _author = string.Empty;
         bool _isBorrowed = false;
         BookType _type;
@@ -25,7 +25,7 @@ namespace LibraryManagementSystem.Models.Books
         public string BookId { get => _bookId; }
         public string Title
         {
-            get => _title; 
+            get => _title;
             protected set
             {
                 if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
@@ -46,7 +46,7 @@ namespace LibraryManagementSystem.Models.Books
         public string ISBN { get => _ISBN; }
         public bool IsBorrowed { get => _isBorrowed; set { _isBorrowed = value; } }
         public BookType Type { get => _type; protected set => _type = value; }
-     
+
         protected Book(string title, string author, BookType type)
         {
             Title = title;
@@ -79,6 +79,14 @@ namespace LibraryManagementSystem.Models.Books
             int hashType = Type.GetHashCode();
 
             return hashTitle ^ hashAuthor ^ (hashType * 17);
+        }
+
+        public static bool SelectBookTypeUsingMenuSelector(out BookType result, string message = "Use the arrow keys to navigate and press Enter to select book type:")
+        {
+            string selectedBookTypeInput = MenuSelector.SelectOption(BookTypeNames, message);
+            bool isValidSelectedBookType = Enum.TryParse(selectedBookTypeInput, false, out BookType validBookType);
+            result = validBookType;
+            return isValidSelectedBookType;
         }
     }
 }
