@@ -6,10 +6,9 @@ namespace LibraryManagementSystem.Services
     internal static class MenuService
     {
         const string ADD_BOOK_ACTION_TEXT = "[ACTION]: Add Book";
-        const string PHYSICAL_BOOK_BORROWED_ACTION_TEXT = "[ACTION]: Borrow Physical book";
         const string PHYSICAL_BOOK_RETURNED_ACTION_TEXT = "[ACTION]: Return Physical book";
 
-        const string EBOOK_BORROWED_ACTION_TEXT = "[ACTION]: Borrow Ebook";
+        const string BORROW_BOOK_ACTION_TEXT = "[ACTION]: Borrow book";
         const string EBOOK_RETURNED_ACTION_TEXT = "[ACTION]: Return Ebook";
 
         const string REGISTER_MEMBER_TEXT = "[ACTION]: Register Member";
@@ -21,9 +20,8 @@ namespace LibraryManagementSystem.Services
             Exit,
             DisplayMenu,
             AddBook,
-            BorrowPhysicalBook,
+            BorrowBook,
             ReturnPhysicalBook,
-            BorrowEBook,
             ReturnEBook,
             GetTotalPhysicalBooks,
             GetTotalEBooks,
@@ -45,20 +43,19 @@ namespace LibraryManagementSystem.Services
             Console.WriteLine("Enter -1 to exit");
             Console.WriteLine("Enter 0 to see menu");
             Console.WriteLine("Enter 1 to add book");
-            Console.WriteLine("Enter 2 to borrow a physical book");
+            Console.WriteLine("Enter 2 to borrow book");
             Console.WriteLine("Enter 3 to return a physical book");
-            Console.WriteLine("Enter 4 to borrow an e-book");
-            Console.WriteLine("Enter 5 to return an e-book");
-            Console.WriteLine("Enter 6 to get total physical books");
-            Console.WriteLine("Enter 7 to get total e-books");
-            Console.WriteLine("Enter 8 to get total borrowed physical books");
-            Console.WriteLine("Enter 9 to get total borrowed e-books");
-            Console.WriteLine("Enter 10 to get all book titles");
-            Console.WriteLine("Enter 11 to get system's total books count");
-            Console.WriteLine("Enter 12 to register a member");
-            Console.WriteLine("Enter 13 to get total members count");
-            Console.WriteLine("Enter 14 to get total teacher members count");
-            Console.WriteLine("Enter 15 to get total student members count");
+            Console.WriteLine("Enter 4 to return an e-book");
+            Console.WriteLine("Enter 5 to get total physical books");
+            Console.WriteLine("Enter 6 to get total e-books");
+            Console.WriteLine("Enter 7 to get total borrowed physical books");
+            Console.WriteLine("Enter 8 to get total borrowed e-books");
+            Console.WriteLine("Enter 9 to get all book titles");
+            Console.WriteLine("Enter 10 to get system's total books count");
+            Console.WriteLine("Enter 11 to register a member");
+            Console.WriteLine("Enter 12 to get total members count");
+            Console.WriteLine("Enter 13 to get total teacher members count");
+            Console.WriteLine("Enter 14 to get total student members count");
 
             Console.Write("\n\n");
         }
@@ -130,14 +127,12 @@ namespace LibraryManagementSystem.Services
                         Console.WriteLine($"\n{ADD_BOOK_ACTION_TEXT}");
                         libraryManagementSystem.AddBook();
                         break;
-                    case (int)Actions.BorrowPhysicalBook:
-                        libraryManagementSystem.BorrowPhysicalBook();
-                        break;
                     case (int)Actions.ReturnPhysicalBook:
                         libraryManagementSystem.ReturnPhysicalBook();
                         break;
-                    case (int)Actions.BorrowEBook:
-                        libraryManagementSystem.BorrowEBook();
+                    case (int)Actions.BorrowBook:
+                        Console.WriteLine($"\n{BORROW_BOOK_ACTION_TEXT}");
+                        libraryManagementSystem.BorrowBook();
                         break;
                     case (int)Actions.ReturnEBook:
                         libraryManagementSystem.ReturnEBook();

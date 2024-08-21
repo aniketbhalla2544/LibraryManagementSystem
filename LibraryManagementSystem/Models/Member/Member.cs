@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using LibraryManagementSystem.Utils;
-using static LibraryManagementSystem.Models.Books.Book;
 
 namespace LibraryManagementSystem.Models.Member
 {
@@ -23,7 +22,7 @@ namespace LibraryManagementSystem.Models.Member
         string _email = string.Empty; // unique prop
         MemberType _type;
 
-        protected HashSet<string> UniqueBorrowedBookIds { get; set; } = new HashSet<string>();
+        protected HashSet<string> BorrowedBookIds { get; set; } = new HashSet<string>();
         public readonly static List<string> MemberTypeNames = Enum.GetNames(typeof(MemberType)).ToList();
         public MemberType Type { get => _type; protected set => _type = value; }
         public string Name { get => $"{FirstName} {LastName}"; }
@@ -70,12 +69,24 @@ namespace LibraryManagementSystem.Models.Member
                 $"\n\temail: '{Email}'" +
                 $"\n\ttype: '{Type}'";
         }
+
         public static bool SelectMemberTypeUsingMenuSelector(out MemberType result, string message = "Use the arrow keys to navigate and press Enter to select member type:")
         {
             string selectedMemberTypeInput = MenuSelector.SelectOption(MemberTypeNames, message);
             bool isValidSelectedMemberType = Enum.TryParse(selectedMemberTypeInput, false, out MemberType validMemberType);
             result = validMemberType;
             return isValidSelectedMemberType;
+        }
+
+        public bool BorrowBook(string bookId)
+        {
+            if(Validator.IsStringNullOrEmptyOrWhitespace(bookId))
+                return false;
+
+            if (!(bookId.Length == 8))
+                return false;
+
+            return BorrowedBookIds.Add(bookId);
         }
     }
 }

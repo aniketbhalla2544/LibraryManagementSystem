@@ -44,7 +44,7 @@ namespace LibraryManagementSystem.Models.Books
             }
         }
         public string ISBN { get => _ISBN; }
-        public bool IsBorrowed { get => _isBorrowed; set { _isBorrowed = value; } }
+        public bool IsBorrowed { get => _isBorrowed; protected set { _isBorrowed = value; } }
         public BookType Type { get => _type; protected set => _type = value; }
 
         protected Book(string title, string author, BookType type)
@@ -88,5 +88,7 @@ namespace LibraryManagementSystem.Models.Books
             result = validBookType;
             return isValidSelectedBookType;
         }
+
+        public void BorrowBook() => IsBorrowed = true;
     }
 }

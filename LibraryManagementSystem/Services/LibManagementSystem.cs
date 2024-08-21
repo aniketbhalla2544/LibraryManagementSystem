@@ -124,6 +124,28 @@ namespace LibraryManagementSystem.Services
             }
         }
 
+        // bool to check if some kind of error while finding member or if member exists or not
+        bool FindMemberByEmail(string email, out Member result)
+        {
+            bool operationSuccess = false;
+            result = null;
+
+            if (!Validator.IsValidEmail(email))
+                return operationSuccess;
+
+            email = email.Trim();
+
+            // checking if member exists
+            Member member = Members.FirstOrDefault(m => m.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            if (!(member == null))
+            {
+                operationSuccess = true;
+                result = member;
+            }
+
+            return operationSuccess;
+        }
+
         // done
         public void AddBook()
         {
@@ -227,39 +249,97 @@ namespace LibraryManagementSystem.Services
                 return;
             }
         }
-
-        public void BorrowPhysicalBook()
+        
+        public void BorrowBook()
         {
-            Console.Write("Enter title of physical book to be borrowed: ");
-            string bookTitle = Console.ReadLine().Trim();
+            /*
+             *  Flow: 
+             *  - input member email with email validation, if member exists then book can be borowed and if not, then not
+             *  - if member exists, ask book details
+             *  -   input title, author and type with their validation
+             *      - check if book exists
+             *          -   if exists,
+             *              -   set isBorrowed to true on book
+             *              -   add book id to borrowed books list of member
+             *          -   if not, then book doesn't exists
+             */
 
-            // if bookTitle is null, empty or whitespace then "book not found"
-            if (string.IsNullOrEmpty(bookTitle) || string.IsNullOrWhiteSpace(bookTitle))
+            // member email input
+            Console.Write("Enter member email: ");
+            string memberEmail = Console.ReadLine().Trim();
+
+            // validation: member email input
+            if (!Validator.IsValidEmail(memberEmail))
             {
-                Console.WriteLine($"[ALERT]: Book with title '{bookTitle}' not found in the system!!");
+                Console.WriteLine($"[INVALID INPUT]: Received invalid email, entered value = '{memberEmail}'");
                 return;
             }
 
-            // finding the physical book with title and making IsBorrowed = true
-            PhysicalBook foundBook = PhysicalBooks.Find(book => book.Title.ToLower().Equals(bookTitle.ToLower()) && !book.IsBorrowed);
-
-            // check if book doesn't exists
-            if (Equals(foundBook, null))
+            // checking if member exists
+            bool memberExists = FindMemberByEmail(memberEmail, out Member member);
+            if (!memberExists)
             {
-                Console.WriteLine($"[ALERT]: Book with title '{bookTitle}' has already been borrowed or not found in the system!!!!");
+                Console.WriteLine($"[NOT FOUND ERROR]: Operation failed because member with email = '{memberEmail}' doesn't exists in the system");
+                Console.WriteLine("[SYSTEM SUGGESTION]: Signup by creating a new member in the system");
                 return;
             }
 
-            foundBook.IsBorrowed = true;
-            Console.WriteLine($"[SUCCESS]: Book with title '{bookTitle}' has been successfully borrowed.");
+            // asking book details
+            // book title input
+            Console.Write("Enter book title: ");
+            string bookTitle = Console.ReadLine().Trim().ToLower();
+
+            // validating book title
+            if (Validator.IsStringNullOrEmptyOrWhitespace(bookTitle))
+            {
+                Console.WriteLine($"[Invalid Input]: book title can't be empty, or only contains whitespace, entered value = '{bookTitle}'");
+                return;
+            }
+
+            // book author input
+            Console.Write("Enter book author: ");
+            string bookAuthor = Console.ReadLine().Trim().ToLower();
+
+            // validating book author
+            if (Validator.IsStringNullOrEmptyOrWhitespace(bookAuthor))
+            {
+                Console.WriteLine($"[Invalid Input]: book author can't be empty, or only contains whitespace, entered value = '{bookAuthor}'");
+                return;
+            }
+
+            // book type input
+            bool bookTypeSelectionSuccess = Book.SelectBookTypeUsingMenuSelector(out Book.BookType selectedBookType);
+
+            // system error
+            if (!bookTypeSelectionSuccess)
+            {
+                Console.WriteLine("[ERROR]: Error while book type selection.");
+                return;
+            }
+
+            // checking if book exists
+            Book book = Books.FirstOrDefault(_book => _book.Title.Equals(bookTitle) && _book.Author.Equals(bookAuthor) && _book.Type.Equals(selectedBookType));
+            if(book == null)
+            {
+                Console.WriteLine("[NOT FOUND]: Book with entered details not found in the system!!");
+                return;
+            }
+
+            // add book id to borrowed book id list of member
+            bool memberBorrowBookOperationSuccess = member.BorrowBook(bookId: book.BookId);
+            if (!memberBorrowBookOperationSuccess)
+            {
+                Console.WriteLine("[SYSTEM ERROR]: Error while borrowing book on member");
+                return;
+            }
+
+            // set book isBorrowed to true 
+            book.BorrowBook();
+
+            Console.WriteLine($"[SUCCESS]: Book with title: '{bookTitle}' has been successfully borrowed by member with name: '{member.Name}' and email: '{member.Email}'");
         }
 
         public void ReturnPhysicalBook()
-        {
-
-        }
-
-        public void BorrowEBook()
         {
 
         }
