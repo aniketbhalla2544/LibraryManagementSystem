@@ -56,19 +56,36 @@ namespace LibraryManagementSystem.Services
         {
             // TODO: Validate member input details
 
+            // member first name input
             Console.Write("Enter first name: ");
-            string firstName = Console.ReadLine();
+            string firstName = Console.ReadLine().Trim().ToLower();
 
+            // validation: first name input
+            if (Validator.IsStringNullOrEmptyOrWhitespace(firstName))
+            {
+                Console.WriteLine($"[Invalid Input]: member's firstname can't be empty, or only contains whitespace, entered value = '{firstName}'");
+                return;
+            }
+
+            // member last name input
             Console.Write("Enter last name: ");
-            string lastName = Console.ReadLine();
+            string lastName = Console.ReadLine().Trim().ToLower();
 
+            // validation: last name input
+            if (Validator.IsStringNullOrEmptyOrWhitespace(lastName))
+            {
+                Console.WriteLine($"[Invalid Input]: member's lastName can't be empty, or only contains whitespace, entered value = '{lastName}'");
+                return;
+            }
+
+            // member email input
             Console.Write("Enter email: ");
-            string email = Console.ReadLine();
+            string email = Console.ReadLine().Trim();
 
-            // email validation
+            // validation: email input
             if (!Validator.IsValidEmail(email))
             {
-                Console.WriteLine($"[INVAID INPUT]: Received invalid email = '{email}'");
+                Console.WriteLine($"[INVAID INPUT]: Received invalid email, entered value = '{email}'");
                 return;
             }
 
@@ -81,7 +98,7 @@ namespace LibraryManagementSystem.Services
                 return;
             }
 
-            // registering members according to valid member type input
+            // registering members according to selected member type
             if (memberType == Member.MemberType.Student)
             {
                 StudentMember newMember = new StudentMember(firstName, lastName, email);
@@ -119,11 +136,6 @@ namespace LibraryManagementSystem.Services
 
         public void AddBook()
         {
-            /*
-             * TODO:
-             * test the flow
-             */
-
             // book title input
             Console.Write("Enter book title: ");
             string bookTitle = Console.ReadLine().Trim().ToLower();
