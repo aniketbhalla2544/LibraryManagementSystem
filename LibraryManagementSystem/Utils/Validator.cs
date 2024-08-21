@@ -1,14 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.Utils
 {
     internal static class Validator
     {
+        public static bool IsStringNullOrEmptyOrWhitespace(string s) => string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s);
+
+        public static bool IsValidURL(string url, out string result)
+        {
+            bool isValid = false;
+            result = string.Empty;
+
+            // Check for null, empty, or whitespace string
+            if (string.IsNullOrEmpty(url) || string.IsNullOrWhiteSpace(url))
+                return isValid;
+
+            const string REGEX_URL_PATTERN = @"^https?:\/\/([a-zA-Z0-9-\.]+)(\.[a-zA-Z]{2,})(\:\d+)?(\/[\w\-\.~]*)*(\?[;&a-zA-Z0-9\-\.=_~%]*)?(\#[-a-zA-Z0-9_]*)?$";
+
+            // validating url with regex pattern
+            if (Regex.IsMatch(url, REGEX_URL_PATTERN))
+            {
+                isValid = true;
+                result = url.Trim();
+            }
+
+            return isValid;
+        }
         public static bool IsValidEmail(string email)
         {
             bool isValid = false;

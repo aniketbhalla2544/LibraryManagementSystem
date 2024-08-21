@@ -5,11 +5,10 @@ namespace LibraryManagementSystem.Services
 {
     internal static class MenuService
     {
-        const string PHYSICAL_BOOK_CREATED_ACTION_TEXT = "[ACTION]: Create Physical Book";
+        const string ADD_BOOK_ACTION_TEXT = "[ACTION]: Add Book";
         const string PHYSICAL_BOOK_BORROWED_ACTION_TEXT = "[ACTION]: Borrow Physical book";
         const string PHYSICAL_BOOK_RETURNED_ACTION_TEXT = "[ACTION]: Return Physical book";
 
-        const string EBOOK_CREATED_ACTION_TEXT = "[ACTION]: Create Ebook";
         const string EBOOK_BORROWED_ACTION_TEXT = "[ACTION]: Borrow Ebook";
         const string EBOOK_RETURNED_ACTION_TEXT = "[ACTION]: Return Ebook";
 
@@ -21,10 +20,9 @@ namespace LibraryManagementSystem.Services
             ClearConsole = -2,
             Exit,
             DisplayMenu,
-            CreatePhysicalBook,
+            AddBook,
             BorrowPhysicalBook,
             ReturnPhysicalBook,
-            CreateEBook,
             BorrowEBook,
             ReturnEBook,
             GetTotalPhysicalBooks,
@@ -46,22 +44,21 @@ namespace LibraryManagementSystem.Services
             Console.WriteLine("Enter -2 to clear console");
             Console.WriteLine("Enter -1 to exit");
             Console.WriteLine("Enter 0 to see menu");
-            Console.WriteLine("Enter 1 to create a physical book");
+            Console.WriteLine("Enter 1 to add book");
             Console.WriteLine("Enter 2 to borrow a physical book");
             Console.WriteLine("Enter 3 to return a physical book");
-            Console.WriteLine("Enter 4 to create an e-book");
-            Console.WriteLine("Enter 5 to borrow an e-book");
-            Console.WriteLine("Enter 6 to return an e-book");
-            Console.WriteLine("Enter 7 to get total physical books");
-            Console.WriteLine("Enter 8 to get total e-books");
-            Console.WriteLine("Enter 9 to get total borrowed physical books");
-            Console.WriteLine("Enter 10 to get total borrowed e-books");
-            Console.WriteLine("Enter 11 to get all book titles");
-            Console.WriteLine("Enter 12 to get system's total books count");
-            Console.WriteLine("Enter 13 to register a member");
-            Console.WriteLine("Enter 14 to get total members count");
-            Console.WriteLine("Enter 15 to get total teacher members count");
-            Console.WriteLine("Enter 16 to get total student members count");
+            Console.WriteLine("Enter 4 to borrow an e-book");
+            Console.WriteLine("Enter 5 to return an e-book");
+            Console.WriteLine("Enter 6 to get total physical books");
+            Console.WriteLine("Enter 7 to get total e-books");
+            Console.WriteLine("Enter 8 to get total borrowed physical books");
+            Console.WriteLine("Enter 9 to get total borrowed e-books");
+            Console.WriteLine("Enter 10 to get all book titles");
+            Console.WriteLine("Enter 11 to get system's total books count");
+            Console.WriteLine("Enter 12 to register a member");
+            Console.WriteLine("Enter 13 to get total members count");
+            Console.WriteLine("Enter 14 to get total teacher members count");
+            Console.WriteLine("Enter 15 to get total student members count");
 
             Console.Write("\n\n");
         }
@@ -129,19 +126,15 @@ namespace LibraryManagementSystem.Services
                         Console.WriteLine();
                         DisplayMenu();
                         continue;
-                    case (int)Actions.CreatePhysicalBook:
-                        Console.WriteLine($"\n{PHYSICAL_BOOK_CREATED_ACTION_TEXT}");
-                        libraryManagementSystem.CreatePhysicalBook();
+                    case (int)Actions.AddBook:
+                        Console.WriteLine($"\n{ADD_BOOK_ACTION_TEXT}");
+                        libraryManagementSystem.AddBook();
                         break;
                     case (int)Actions.BorrowPhysicalBook:
                         libraryManagementSystem.BorrowPhysicalBook();
                         break;
                     case (int)Actions.ReturnPhysicalBook:
                         libraryManagementSystem.ReturnPhysicalBook();
-                        break;
-                    case (int)Actions.CreateEBook:
-                        Console.WriteLine($"\n{EBOOK_CREATED_ACTION_TEXT}");
-                        libraryManagementSystem.CreateEBook();
                         break;
                     case (int)Actions.BorrowEBook:
                         libraryManagementSystem.BorrowEBook();

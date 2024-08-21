@@ -54,6 +54,8 @@ namespace LibraryManagementSystem.Services
         // done
         public void RegisterMember()
         {
+            // TODO: Validate member input details
+
             Console.Write("Enter first name: ");
             string firstName = Console.ReadLine();
 
@@ -66,7 +68,7 @@ namespace LibraryManagementSystem.Services
             // email validation
             if (!Validator.IsValidEmail(email))
             {
-                Console.WriteLine($"[ERROR]: Received invalid email = '{email}' while registering member in the system.");
+                Console.WriteLine($"[INVAID INPUT]: Received invalid email = '{email}'");
                 return;
             }
 
@@ -115,58 +117,112 @@ namespace LibraryManagementSystem.Services
             }
         }
 
-        // done
         public void AddBook()
         {
+            /*
+             * TODO:
+             * test the flow
+             */
 
-        }
-
-        public void CreatePhysicalBook()
-        {
+            // book title input
             Console.Write("Enter book title: ");
-            string bookTitle = Console.ReadLine().Trim();
+            string bookTitle = Console.ReadLine().Trim().ToLower();
 
-            Console.Write("Enter book author: ");
-            string author = Console.ReadLine().Trim();
-
-            Console.Write("Enter book shelfLocation: ");
-            string shelfLocation = Console.ReadLine().Trim();
-
-            // --- validations
-
-            // check for existing book with same title
-            bool bookExists = PhysicalBooks.Exists(book => book.Title.ToLower().Equals(bookTitle.ToLower()));
-
-            if (bookExists)
+            // validating book title
+            if (Validator.IsStringNullOrEmptyOrWhitespace(bookTitle))
             {
-                Console.WriteLine($"[ALERT]: Physical book with title = '{bookTitle}' already exists in the system!!");
+                Console.WriteLine($"[Invalid Input]: book title can't be empty, or only contains whitespace, entered value = '{bookTitle}'");
                 return;
             }
 
-            PhysicalBook newPhysicalBook = new PhysicalBook(title: bookTitle, author: author, shelfLocation: shelfLocation);
-
-            PhysicalBooks.Add(newPhysicalBook);
-
-            Console.WriteLine($"\n{newPhysicalBook}");
-        }
-
-        // done
-        public void CreateEBook()
-        {
-            Console.Write("Enter book title: ");
-            string title = Console.ReadLine();
-
+            // book author input
             Console.Write("Enter book author: ");
-            string author = Console.ReadLine();
+            string BookAuthor = Console.ReadLine().Trim().ToLower();
 
-            Console.Write("Enter book's downloadLink: ");
-            string url = Console.ReadLine();
+            // validating book author
+            if (Validator.IsStringNullOrEmptyOrWhitespace(BookAuthor))
+            {
+                Console.WriteLine($"[Invalid Input]: book author can't be empty, or only contains whitespace, entered value = '{BookAuthor}'");
+                return;
+            }
 
-            EBook newEBook = new EBook(title: title, author: author, downloadLink: url);
+            // book type input
+            string selectedBookTypeInput = MenuSelector.SelectOption(Book.BookTypeNames, message: "Use the arrow keys to navigate and press Enter to select book type:");
+            bool isValidBookType = Enum.TryParse(selectedBookTypeInput, out Book.BookType selectedBookType);
+            if (!isValidBookType)
+            {
+                Console.WriteLine("[ERROR]: Received invalid book type while registering member in the system.");
+                return;
+            }
 
-            EBooks.Add(newEBook);
+            // taking actions according to selected book type
+            if (selectedBookType.Equals(Book.BookType.Physical))  // for physical book creation
+            {
+                // book shelfLocation input
+                Console.Write("Enter book shelfLocation: ");
+                string bookShelfLocation = Console.ReadLine().Trim();
 
-            Console.WriteLine($"\n{newEBook}");
+                // validating book shelfLocation
+                if (Validator.IsStringNullOrEmptyOrWhitespace(bookShelfLocation))
+                {
+                    Console.WriteLine($"[Invalid Input]: book shelfLocation can't be empty, or only contains whitespace, entered value = '{bookShelfLocation}'");
+                    return;
+                }
+
+                Book newBook = new PhysicalBook(title: bookTitle, author: BookAuthor, shelfLocation: bookShelfLocation);
+                bool bookAdded = Books.Add(newBook);
+
+                // checking if book already exists in the "books" hashset, if not book added then it already exists
+                if (!bookAdded)
+                {
+                    Console.WriteLine($"[ALERT]: Physical book with the following details already exists in the system!!");
+                    Console.WriteLine(newBook);
+                    return;
+                }
+
+                Console.WriteLine("[SUCCESS]: Physical book has been successfully added to the system!!");
+                Console.WriteLine(newBook);
+            }
+            else if (selectedBookType.Equals(Book.BookType.Ebook))  // for e-book creation
+            {
+                // book download link input
+                Console.Write("Enter book download link: ");
+                string downloadLinkInput = Console.ReadLine().Trim();
+
+                // validating book  download link, can't be empty or contains whitespace only
+                if (Validator.IsStringNullOrEmptyOrWhitespace(downloadLinkInput))
+                {
+                    Console.WriteLine($"[Invalid Input]: book download link can't be empty, or only contains whitespace, entered value = '{downloadLinkInput}'");
+                    return;
+                }
+
+                // validating book download link, URL validation
+                bool isValidDownloadLink = Validator.IsValidURL(downloadLinkInput, out string downloadLink);
+                if (!isValidDownloadLink)
+                {
+                    Console.WriteLine($"[Invalid Input]: book download link URL is invalid, entered value = '{downloadLinkInput}'");
+                    return;
+                }
+
+                Book newBook = new EBook(title: bookTitle, author: BookAuthor, downloadLink: downloadLink);
+                bool bookAdded = Books.Add(newBook);
+
+                // checking if book already exists in the "books" hashset, if not book added then it already exists
+                if (!bookAdded)
+                {
+                    Console.WriteLine($"[ALERT]: E-book with the following details already exists in the system!!");
+                    Console.WriteLine(newBook);
+                    return;
+                }
+
+                Console.WriteLine("[SUCCESS]: E-book has been successfully added to the system!!");
+                Console.WriteLine(newBook);
+            }
+            else
+            {
+                Console.WriteLine("[ERROR]: Received invalid member type while registering member in the system.");
+                return;
+            }
         }
 
         public void BorrowPhysicalBook()

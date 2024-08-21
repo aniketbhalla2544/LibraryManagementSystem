@@ -17,15 +17,13 @@ namespace LibraryManagementSystem.Models.Books
         public override string ToString()
         {
             return base.ToString() +
-                $"\n\tdownload link: {DownloadLink}";
+                $"\n\tdownload link: '{DownloadLink}'";
         }
 
         static string ValidateURL(string url)
         {
-            if (CustomUtils.IsValidURL(url, out string result))
-                return result;
-
-            Console.WriteLine($"Invalid ebook url: {url}");
+            if (Validator.IsValidURL(url, out string result))
+                return result.Trim();
 
             throw new ArgumentException("Invalid URL can't be set as a download link of an Ebook");
         }

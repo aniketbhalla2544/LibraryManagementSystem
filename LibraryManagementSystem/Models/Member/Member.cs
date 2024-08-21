@@ -5,7 +5,7 @@ using LibraryManagementSystem.Utils;
 
 namespace LibraryManagementSystem.Models.Member
 {
-    // email prop is unique in member type
+    // uniqueness = email
     internal abstract class Member
     {
         public enum MemberType
@@ -30,14 +30,13 @@ namespace LibraryManagementSystem.Models.Member
         public string FirstName
         {
             get => _firstName;
-            protected set => _firstName = !string.IsNullOrWhiteSpace(value) && !string.IsNullOrEmpty(value) ? value : string.Empty;
+            protected set => _firstName = !string.IsNullOrWhiteSpace(value) && !string.IsNullOrEmpty(value) ? value.Trim().ToLower() : string.Empty;
         }
         public string LastName
         {
             get => _lastName;
-            protected set => _lastName = !string.IsNullOrWhiteSpace(value) && !string.IsNullOrEmpty(value) ? value : string.Empty;
+            protected set => _lastName = !string.IsNullOrWhiteSpace(value) && !string.IsNullOrEmpty(value) ? value.Trim().ToLower() : string.Empty;
         }
-        // unique prop
         public string Email
         {
             get => _email;

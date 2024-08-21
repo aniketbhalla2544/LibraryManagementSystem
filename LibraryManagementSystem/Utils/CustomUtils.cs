@@ -11,27 +11,6 @@ namespace LibraryManagementSystem.Utils
             return Guid.NewGuid().ToString("N").Substring(startIndex, length);
         }
 
-        public static bool IsValidURL(string url, out string result)
-        {
-            bool isValid = false;
-            result = string.Empty;
-
-            // Check for null, empty, or whitespace string
-            if (string.IsNullOrEmpty(url) || string.IsNullOrWhiteSpace(url))
-                return isValid;
-
-            const string REGEX_URL_PATTERN = @"^https?:\/\/([a-zA-Z0-9-\.]+)(\.[a-zA-Z]{2,})(\:\d+)?(\/[\w\-\.~]*)*(\?[;&a-zA-Z0-9\-\.=_~%]*)?(\#[-a-zA-Z0-9_]*)?$";
-
-            // validating url with regex pattern
-            if (Regex.IsMatch(url, REGEX_URL_PATTERN))
-            {
-                isValid = true;
-                result = url.Trim();
-            }
-            
-            return isValid;
-        }
-   
         public static bool IntInValidRange(int check, int max, int min)
         {
             if (max < min || min > max)

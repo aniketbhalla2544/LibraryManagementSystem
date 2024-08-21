@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Diagnostics.Eventing.Reader;
+using System.Collections.Generic;
+using System.Linq;
 using LibraryManagementSystem.Utils;
 
 namespace LibraryManagementSystem.Models.Books
@@ -21,6 +21,7 @@ namespace LibraryManagementSystem.Models.Books
         bool _isBorrowed = false;
         BookType _type;
 
+        public static List<string> BookTypeNames = Enum.GetNames(typeof(BookType)).ToList();
         public string BookId { get => _bookId; }
         public string Title
         {
@@ -29,7 +30,7 @@ namespace LibraryManagementSystem.Models.Books
             {
                 if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
                     throw new ArgumentNullException($"Trying to set invalid book's title = '{value}'");
-                _title = value.Trim().ToUpperInvariant();
+                _title = value.Trim().ToLower();
             }
         }
         public string Author
@@ -39,7 +40,7 @@ namespace LibraryManagementSystem.Models.Books
             {
                 if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
                     throw new ArgumentNullException($"Trying to set invalid book's author name = '{value}'");
-                _title = value.Trim().ToUpperInvariant();
+                _author = value.Trim();
             }
         }
         public string ISBN { get => _ISBN; }
@@ -56,7 +57,7 @@ namespace LibraryManagementSystem.Models.Books
         public override string ToString()
         {
             return $"Book details\n\tbook id: '{BookId}',\n\ttitle: '{Title}'," +
-                $"\n\tauthor: '{Author}',\n\tISBN: '{ISBN}',\n\tis borrowed: {IsBorrowed}," +
+                $"\n\tauthor: '{Author}',\n\tISBN: '{ISBN}',\n\tisBorrowed: {IsBorrowed}," +
                 $"\n\ttype: {Type}";
         }
 
@@ -65,6 +66,7 @@ namespace LibraryManagementSystem.Models.Books
         {
             if (obj is Book otherBook)
             {
+                // check if both book's title, author and type are same or not
                 return otherBook.Title.Equals(Title) && otherBook.Author.Equals(Author) && otherBook.Type == Type;
             }
             return false;
