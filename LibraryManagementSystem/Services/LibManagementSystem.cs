@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using LibraryManagementSystem.Models.Books;
 using LibraryManagementSystem.Models.Member;
 using LibraryManagementSystem.Utils;
+using LibraryManagementSystem.Interfaces.Infrastrcture.Models;
 
 namespace LibraryManagementSystem.Services
 {
-    internal class LibManagementSystem
+    internal class LibManagementSystem : ILibraryService
     {
         public HashSet<Member> Members { get; private set; } = new HashSet<Member>();
         public HashSet<Book> Books { get; private set; } = new HashSet<Book>();
@@ -317,7 +317,7 @@ namespace LibraryManagementSystem.Services
             }
 
             // checking if book exists with given book details 
-            Book book = Books.FirstOrDefault(_book => _book.Title.Equals(bookTitle) && _book.Author.Equals(bookAuthor) && _book.Type.Equals(selectedBookType) && !_book.IsBorrowed);
+            Book book = Books.FirstOrDefault(_book => _book.Title.Equals(bookTitle) && _book.Author.Equals(bookAuthor) && _book.Type.Equals(selectedBookType));
             if (book == null)
             {
                 Console.WriteLine("[NOT FOUND]: book with entered details doesn't exist in the system!!");
@@ -350,14 +350,108 @@ namespace LibraryManagementSystem.Services
             Console.WriteLine($"[SUCCESS]: Book with title: '{bookTitle}' has been successfully borrowed by member with name: '{member.Name}' and email: '{member.Email}'");
         }
 
-        public void ReturnPhysicalBook()
+        /*
+          *  -  Take member email input with email validation
+          *  -  Check if member exists
+          *     -   if member exists
+          *         -   ask book details: title, author and type with validation and check if book exists
+          *             -   if book exists
+          *                 -   check if book was previously borrowed or not
+          *                     -   if book was borrowed, check if borrowed by member
+          *                         -   if book borrowed by member
+          *                             -   call returnBook method on both book and member
+          *                         -   if book not borrowed by member, alert user
+          *                 -   if book not borrowed, alert user
+          *             -   if book doesn't exist then alert user    
+          *     -   if member doesn't exists, alert user to register
+          */
+        public void ReturnBook()
         {
+            // member email input
+            Console.Write("Enter member email: ");
+            string memberEmail = Console.ReadLine().Trim();
 
-        }
+            // validation: member email input
+            if (!Validator.IsValidEmail(memberEmail))
+            {
+                Console.WriteLine($"[INVALID INPUT]: Received invalid email, entered value = '{memberEmail}'");
+                return;
+            }
 
-        public void ReturnEBook()
-        {
+            // checking if member exists
+            bool memberExists = FindMemberByEmail(memberEmail, out Member member);
+            if (!memberExists)
+            {
+                Console.WriteLine($"[NOT FOUND ERROR]: Operation failed because member with email = '{memberEmail}' doesn't exists in the system");
+                Console.WriteLine("[SYSTEM SUGGESTION]: Signup by creating a new member in the system");
+                return;
+            }
 
+            // asking book details
+            // book title input
+            Console.Write("Enter book title: ");
+            string bookTitle = Console.ReadLine().Trim().ToLower();
+
+            // validating book title
+            if (Validator.IsStringNullOrEmptyOrWhitespace(bookTitle))
+            {
+                Console.WriteLine($"[Invalid Input]: book title can't be empty, or only contains whitespace, entered value = '{bookTitle}'");
+                return;
+            }
+
+            // book author input
+            Console.Write("Enter book author: ");
+            string bookAuthor = Console.ReadLine().Trim().ToLower();
+
+            // validating book author
+            if (Validator.IsStringNullOrEmptyOrWhitespace(bookAuthor))
+            {
+                Console.WriteLine($"[Invalid Input]: book author can't be empty, or only contains whitespace, entered value = '{bookAuthor}'");
+                return;
+            }
+
+            // book type input
+            bool bookTypeSelectionSuccess = Book.SelectBookTypeUsingMenuSelector(out Book.BookType selectedBookType);
+
+            // system error
+            if (!bookTypeSelectionSuccess)
+            {
+                Console.WriteLine("[ERROR]: Error while book type selection.");
+                return;
+            }
+
+            // checking if book exists with given book details 
+            Book book = Books.FirstOrDefault(_book => _book.Title.Equals(bookTitle) && _book.Author.Equals(bookAuthor) && _book.Type.Equals(selectedBookType));
+            if (book == null)
+            {
+                Console.WriteLine("[NOT FOUND]: book with entered details doesn't exist in the system!!");
+                return;
+            }
+
+            // check if book was previously borrowed or not
+            if (!book.IsBorrowed)
+            {
+                Console.WriteLine("[ERROR]: book with entered details was never borrowed!!");
+                return;
+            }
+
+            //  check if book borrowed by member by trying to return book
+            string bookId = book.BookId;
+            if (!member.TryReturnBook(bookId, out bool validationError))
+            {
+                if (validationError)
+                {
+                    Console.WriteLine("[SYSTEM ERROR]: Error while doing operation");
+                    return;
+                }
+
+                Console.WriteLine($"[ERROR]: Book wasn't borrowed by you!!");
+                return;
+            }
+
+            book.ReturnBook();
+
+            Console.WriteLine($"Book with given details and borrowed by '{member.Name}' has been successfully returned!");
         }
 
         // done

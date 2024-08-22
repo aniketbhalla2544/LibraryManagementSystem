@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LibraryManagementSystem.Utils;
+using LibraryManagementSystem.Models.Books;
 
 namespace LibraryManagementSystem.Models.Member
 {
@@ -70,12 +71,40 @@ namespace LibraryManagementSystem.Models.Member
                 $"\n\ttype: '{Type}'";
         }
 
+
+
         public static bool SelectMemberTypeUsingMenuSelector(out MemberType result, string message = "Use the arrow keys to navigate and press Enter to select member type:")
         {
             string selectedMemberTypeInput = MenuSelector.SelectOption(MemberTypeNames, message);
             bool isValidSelectedMemberType = Enum.TryParse(selectedMemberTypeInput, false, out MemberType validMemberType);
             result = validMemberType;
             return isValidSelectedMemberType;
+        }
+
+        public bool FindIfBookBorrowedByMemberByBooKId(string bookId, out bool validationError)
+        {
+            validationError = false;
+
+            if (!Book.IsValidBookId(bookId))
+            {
+                validationError = true;
+                return false;
+            }
+
+            return BorrowedBookIds.Contains(bookId);
+        }
+
+        public bool TryReturnBook(string bookId, out bool validationError)
+        {
+            validationError = false;
+
+            if (!Book.IsValidBookId(bookId))
+            {
+                validationError = true;
+                return false;
+            }
+
+            return BorrowedBookIds.Remove(bookId);
         }
 
         public bool BorrowBook(string bookId, out bool validationError)

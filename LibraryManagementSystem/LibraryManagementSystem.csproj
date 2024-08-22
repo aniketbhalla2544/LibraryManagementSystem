@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IMember.cs" />
+    <Compile Include="Interfaces\Infrastrcture\Models\ILibraryService.cs" />
     <Compile Include="Models\Books\Book.cs" />
     <Compile Include="Models\Books\EBook.cs" />
     <Compile Include="Models\Books\PhysicalBook.cs" />

@@ -5,16 +5,19 @@ using LibraryManagementSystem.Utils;
 
 namespace LibraryManagementSystem.Models.Books
 {
+
     // uniqueness = title + author + type
     internal abstract class Book
     {
+        const int BOOK_ID_LENGTH = 8;
+
         public enum BookType
         {
             Physical,
             Ebook
         }
 
-        readonly string _bookId = CustomUtils.GenerateUniqueID(0, 8);
+        readonly string _bookId = CustomUtils.GenerateUniqueID(0, BOOK_ID_LENGTH);
         readonly string _ISBN = CustomUtils.GenerateUniqueID(); // 13 digit unique number
         string _title = string.Empty;
         string _author = string.Empty;
@@ -81,6 +84,15 @@ namespace LibraryManagementSystem.Models.Books
             return hashTitle ^ hashAuthor ^ (hashType * 17);
         }
 
+        public static bool IsValidBookId(string bookId)
+        {
+            if (Validator.IsStringNullOrEmptyOrWhitespace(bookId)) return false;
+
+            bookId = bookId.Trim();
+
+            return bookId.Length == BOOK_ID_LENGTH;
+        }
+
         public static bool SelectBookTypeUsingMenuSelector(out BookType result, string message = "Use the arrow keys to navigate and press Enter to select book type:")
         {
             string selectedBookTypeInput = MenuSelector.SelectOption(BookTypeNames, message);
@@ -90,5 +102,7 @@ namespace LibraryManagementSystem.Models.Books
         }
 
         public void BorrowBook() => IsBorrowed = true;
+
+        public void ReturnBook() => IsBorrowed = false;
     }
 }
