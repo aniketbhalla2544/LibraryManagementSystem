@@ -37,10 +37,6 @@ namespace LibraryManagementSystem.Services
         }
         public long TotalBooksCount { get => PhysicalBooks.Count + EBooks.Count; }
 
-        public LibManagementSystem()
-        {
-        }
-
         //methods
         // done
         public void RegisterMember()
@@ -249,21 +245,24 @@ namespace LibraryManagementSystem.Services
                 return;
             }
         }
-        
-        public void BorrowBook()
-        {
-            /*
+
+        /*
              *  Flow: 
              *  - input member email with email validation, if member exists then book can be borowed and if not, then not
              *  - if member exists, ask book details
              *  -   input title, author and type with their validation
              *      - check if book exists
              *          -   if exists,
-             *              -   set isBorrowed to true on book
-             *              -   add book id to borrowed books list of member
-             *          -   if not, then book doesn't exists
-             */
-
+             *              -   check if book has already been borrowed or not
+             *                  - if yes
+             *                      - alert user
+             *                  - if not
+             *                      - borrow book method on book
+             *                      - add book id to the borrowed books list of member
+             *          -   if not, then alert user
+        */
+        public void BorrowBook()
+        {
             // member email input
             Console.Write("Enter member email: ");
             string memberEmail = Console.ReadLine().Trim();
@@ -317,19 +316,31 @@ namespace LibraryManagementSystem.Services
                 return;
             }
 
-            // checking if book exists
-            Book book = Books.FirstOrDefault(_book => _book.Title.Equals(bookTitle) && _book.Author.Equals(bookAuthor) && _book.Type.Equals(selectedBookType));
-            if(book == null)
+            // checking if book exists with given book details 
+            Book book = Books.FirstOrDefault(_book => _book.Title.Equals(bookTitle) && _book.Author.Equals(bookAuthor) && _book.Type.Equals(selectedBookType) && !_book.IsBorrowed);
+            if (book == null)
             {
-                Console.WriteLine("[NOT FOUND]: Book with entered details not found in the system!!");
+                Console.WriteLine("[NOT FOUND]: book with entered details doesn't exist in the system!!");
                 return;
             }
 
-            // add book id to borrowed book id list of member
-            bool memberBorrowBookOperationSuccess = member.BorrowBook(bookId: book.BookId);
+            // check if book has already been borrowed
+            if (book.IsBorrowed)
+            {
+                Console.WriteLine("[ALERT]: book with entered details has already been borrowed!!");
+                return;
+            }
+
+            // Add book to the 'borrowed books list' of member
+            bool memberBorrowBookOperationSuccess = member.BorrowBook(bookId: book.BookId, out bool validationError);
             if (!memberBorrowBookOperationSuccess)
             {
-                Console.WriteLine("[SYSTEM ERROR]: Error while borrowing book on member");
+                if (validationError)
+                {
+                    Console.WriteLine("[SYSTEM ERROR]: Error while borrowing book to member");
+                    return;
+                }
+                Console.WriteLine("[ALERT]: Book with given details has already been borrowed by the member");
                 return;
             }
 

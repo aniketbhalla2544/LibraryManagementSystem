@@ -78,13 +78,21 @@ namespace LibraryManagementSystem.Models.Member
             return isValidSelectedMemberType;
         }
 
-        public bool BorrowBook(string bookId)
+        public bool BorrowBook(string bookId, out bool validationError)
         {
-            if(Validator.IsStringNullOrEmptyOrWhitespace(bookId))
+            validationError = false;
+
+            if (Validator.IsStringNullOrEmptyOrWhitespace(bookId))
+            {
+                validationError = true;
                 return false;
+            }
 
             if (!(bookId.Length == 8))
+            {
+                validationError = true;
                 return false;
+            }
 
             return BorrowedBookIds.Add(bookId);
         }
