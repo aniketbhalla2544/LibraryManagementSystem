@@ -1,8 +1,15 @@
 # LibraryManagementSystem
-
+![Library-management-system--aniket](https://github.com/user-attachments/assets/c84bfc3e-f0ab-4e97-9c1e-e863810b4dc8)
 ## Features
-1. Add unique members to the system
-2. Add unique books to the system
-3. Menu selector options
-4. Interactive menu
-5. Check total books, physical books, e-books, members, teacher members, student members count
+1. Interactive menu with `menu selector` options
+2. Add unique books (physical and e-book) and members (teacher and student) to the system
+3. Add, borrow and return book to the library management system
+4. Check total books, physical books, e-books, members, teacher members, student members count
+
+## Applied Concepts
+1. `OOPs`
+2. `Solid Principles`
+3. `Best Practices`
+
+## My Portfolio Website
+Check out my portfolio website at [www.aniketbhalla.com](www.aniketbhalla.com)
