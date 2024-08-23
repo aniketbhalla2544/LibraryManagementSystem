@@ -113,7 +113,8 @@ namespace LibraryManagementSystem.Services
                         DisplayMenu();
                         break;
                     case (int)Actions.Exit:
-                        AskActionNumberUserInput = false;
+                        Environment.Exit(0);
+                        //AskActionNumberUserInput = false;
                         break;
                     case (int)Actions.DisplayMenu:
                         Console.WriteLine();
