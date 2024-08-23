@@ -1,15 +1,16 @@
 ﻿using System;
+using LibraryManagementSystem.Models.Books;
+using LibraryManagementSystem.Models.Member;
 using LibraryManagementSystem.Utils;
+using System.Collections.Generic;
 
 namespace LibraryManagementSystem.Services
 {
     internal static class MenuService
     {
         const string ADD_BOOK_ACTION_TEXT = "[ACTION]: Add Book";
-
         const string BORROW_BOOK_ACTION_TEXT = "[ACTION]: Borrow book";
         const string RETURN_BOOK_ACTION_TEXT = "[ACTION]: Return book";
-
         const string REGISTER_MEMBER_TEXT = "[ACTION]: Register Member";
 
         // update min and max of IntInValidRange() upon updating Actions

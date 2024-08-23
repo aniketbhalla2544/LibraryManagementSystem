@@ -5,34 +5,35 @@ using LibraryManagementSystem.Models.Books;
 using LibraryManagementSystem.Models.Member;
 using LibraryManagementSystem.Utils;
 using LibraryManagementSystem.Interfaces.Infrastrcture.Models;
+using System.Collections.ObjectModel;
 
 namespace LibraryManagementSystem.Services
 {
     internal class LibManagementSystem : ILibraryService
     {
-        public HashSet<Member> Members { get; private set; } = new HashSet<Member>();
-        public HashSet<Book> Books { get; private set; } = new HashSet<Book>();
+        private HashSet<Member> Members { get; set; } = new HashSet<Member>();
+        private HashSet<Book> Books { get; set; } = new HashSet<Book>();
 
         // drived class props
-        public List<StudentMember> StudentMembers { get => Members.OfType<StudentMember>().ToList(); }
-        public List<TeacherMember> TeacherMembers { get => Members.OfType<TeacherMember>().ToList(); }
-        public List<PhysicalBook> PhysicalBooks { get => Books.OfType<PhysicalBook>().ToList(); }
-        public List<EBook> EBooks { get => Books.OfType<EBook>().ToList(); }
+        public ReadOnlyCollection<StudentMember> StudentMembers { get => Members.OfType<StudentMember>().ToList().AsReadOnly(); }
+        public ReadOnlyCollection<TeacherMember> TeacherMembers { get => Members.OfType<TeacherMember>().ToList().AsReadOnly(); }
+        public ReadOnlyCollection<PhysicalBook> PhysicalBooks { get => Books.OfType<PhysicalBook>().ToList().AsReadOnly(); }
+        public ReadOnlyCollection<EBook> EBooks { get => Books.OfType<EBook>().ToList().AsReadOnly(); }
         public long TotalStudentMembersCount { get => StudentMembers.Count; }
         public long TotalTeacherMembersCount { get => TeacherMembers.Count; }
         public long TotalMembersCount { get => TotalStudentMembersCount + TotalTeacherMembersCount; }
-        public long TotalBorrowedPhysicalBooks { get => PhysicalBooks.FindAll(book => book.IsBorrowed).Count; }
-        public long TotalBorrowedEBooks { get => EBooks.FindAll(book => book.IsBorrowed).Count; }
-        public List<string> PhysicalBookTitlesList { get => PhysicalBooks.ConvertAll(book => book.Title); }
-        public List<string> EBookTitlesList { get => EBooks.ConvertAll(book => book.Title); }
-        public List<string> AllBookTitlesList
+        public long TotalBorrowedPhysicalBooks { get => Books.OfType<PhysicalBook>().ToList().FindAll(book => book.IsBorrowed).Count; }
+        public long TotalBorrowedEBooks { get => Books.OfType<EBook>().ToList().FindAll(book => book.IsBorrowed).Count; }
+        public ReadOnlyCollection<string> PhysicalBookTitlesList { get => Books.OfType<PhysicalBook>().ToList().ConvertAll(book => book.Title).AsReadOnly(); }
+        public ReadOnlyCollection<string> EBookTitlesList { get => Books.OfType<EBook>().ToList().ConvertAll(book => book.Title).AsReadOnly(); }
+        public ReadOnlyCollection<string> AllBookTitlesList
         {
             get
             {
                 List<string> _allBookTitlesList = new List<string>();
                 _allBookTitlesList.AddRange(PhysicalBookTitlesList);
                 _allBookTitlesList.AddRange(EBookTitlesList);
-                return _allBookTitlesList;
+                return new ReadOnlyCollection<string>(_allBookTitlesList);
             }
         }
         public long TotalBooksCount { get => PhysicalBooks.Count + EBooks.Count; }
