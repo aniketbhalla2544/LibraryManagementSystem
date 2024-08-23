@@ -53,7 +53,7 @@ namespace LibraryManagementSystem.Services
             Console.WriteLine("Enter 11 to get total members count");
             Console.WriteLine("Enter 12 to get total teacher members count");
             Console.WriteLine("Enter 13 to get total student members count");
-            Console.Write("\n\n");
+            Console.Write("\n");
         }
 
 
@@ -151,11 +151,6 @@ namespace LibraryManagementSystem.Services
                         break;
                     case (int)Actions.RegisterMember:
                         Console.WriteLine($"\n{REGISTER_MEMBER_TEXT}");
-
-
-
-
-
                         libraryManagementSystem.RegisterMember();
                         break;
                     case (int)Actions.GetTotalMembersCount:

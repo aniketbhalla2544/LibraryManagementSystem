@@ -5,7 +5,7 @@ namespace LibraryManagementSystem.Utils
 {
     internal static class MenuSelector
     {
-        public static string SelectOption(List<string> options, string message = "Use the arrow keys to navigate and press Enter to select:")
+        public static string SelectOption(List<string> options, string message = "Use the arrow keys to navigate and press Enter to select:", bool beepSound = true)
         {
             int currentSelection = 0;
             ConsoleKey key;
@@ -39,6 +39,7 @@ namespace LibraryManagementSystem.Utils
 
                 // Capture the key press
                 key = Console.ReadKey(true).Key;
+                if(beepSound) Console.Beep();
 
                 // Update the current selection based on the key press
                 if (key == ConsoleKey.UpArrow)
