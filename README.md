@@ -12,4 +12,4 @@
 3. `Best Practices`
 
 ## My Portfolio Website
-Check out my portfolio website at [www.aniketbhalla.com](www.aniketbhalla.com)
+Check out my portfolio website at [www.aniketbhalla.com](https://www.aniketbhalla.com)
