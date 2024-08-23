@@ -4,7 +4,7 @@ using System.Linq;
 using LibraryManagementSystem.Models.Books;
 using LibraryManagementSystem.Models.Member;
 using LibraryManagementSystem.Utils;
-using LibraryManagementSystem.Interfaces.Infrastrcture.Models;
+using LibraryManagementSystem.Interfaces.Infrastrcture.Services;
 using System.Collections.ObjectModel;
 
 namespace LibraryManagementSystem.Services

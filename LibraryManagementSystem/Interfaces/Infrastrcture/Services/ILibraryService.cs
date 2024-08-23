@@ -1,5 +1,5 @@
 ﻿
-namespace LibraryManagementSystem.Interfaces.Infrastrcture.Models
+namespace LibraryManagementSystem.Interfaces.Infrastrcture.Services
 {
     internal interface ILibraryService
     {
