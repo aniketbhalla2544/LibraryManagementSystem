@@ -6,10 +6,5 @@
 3. Add, borrow and return book to the library management system
 4. Check total books, physical books, e-books, members, teacher members, student members count
 
-## Applied Concepts
-1. `OOPs`
-2. `Solid Principles`
-3. `Best Practices`
-
 ## My Portfolio Website
 Check out my portfolio website at [www.aniketbhalla.com](https://www.aniketbhalla.com)
