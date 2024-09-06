@@ -38,6 +38,20 @@ namespace LibraryManagementSystem.Services
         }
         public long TotalBooksCount { get => PhysicalBooks.Count + EBooks.Count; }
 
+        static LibManagementSystem instance = null;
+
+        LibManagementSystem() { }
+
+        public static LibManagementSystem Instance
+        {
+            get
+            {
+                // TODO: Add thread locking
+                if (Equals(Instance, null)) instance = new LibManagementSystem();
+                return instance;
+            }
+        }
+
         //methods
         // done
         public void RegisterMember()
@@ -51,7 +65,7 @@ namespace LibraryManagementSystem.Services
             // validation: first name input
             if (Validator.IsStringNullOrEmptyOrWhitespace(firstName))
             {
-                Console.WriteLine($"[Invalid Input]: member's firstname can't be empty, or only contains whitespace, entered value = '{firstName}'");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[Invalid Input]: member's firstname can't be empty, or only contains whitespace, entered value = '{firstName}'"));
                 return;
             }
 
@@ -62,7 +76,7 @@ namespace LibraryManagementSystem.Services
             // validation: last name input
             if (Validator.IsStringNullOrEmptyOrWhitespace(lastName))
             {
-                Console.WriteLine($"[Invalid Input]: member's lastName can't be empty, or only contains whitespace, entered value = '{lastName}'");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[Invalid Input]: member's lastName can't be empty, or only contains whitespace, entered value = '{lastName}'"));
                 return;
             }
 
@@ -73,7 +87,7 @@ namespace LibraryManagementSystem.Services
             // validation: email input
             if (!Validator.IsValidEmail(email))
             {
-                Console.WriteLine($"[INVAID INPUT]: Received invalid email, entered value = '{email}'");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[INVAID INPUT]: Received invalid email, entered value = '{email}'"));
                 return;
             }
 
@@ -81,7 +95,7 @@ namespace LibraryManagementSystem.Services
             bool memberTypeSelection = Member.SelectMemberTypeUsingMenuSelector(out Member.MemberType memberType);
             if (!memberTypeSelection)
             {
-                Console.WriteLine("[ERROR]: Error while selecting member type");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[ERROR]: Error while selecting member type"));
                 return;
             }
 
@@ -92,11 +106,11 @@ namespace LibraryManagementSystem.Services
                 bool memberRegistered = Members.Add(newMember);
                 if (!memberRegistered)
                 {
-                    Console.WriteLine($"[ALERT]: member with email = '{email.Trim().ToLower()}' has already been registered in the system!!");
+                    ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[ALERT]: member with email = '{email.Trim().ToLower()}' has already been registered in the system!!"));
                     return;
                 }
 
-                Console.WriteLine("[SUCCESS]: Student member successfully registered with following details: !!");
+                ConsoleText.WriteWithDarkGreen(() => Console.WriteLine("[SUCCESS]: Student member successfully registered with following details: !!"));
                 Console.WriteLine(newMember);
                 return;
             }
@@ -106,17 +120,17 @@ namespace LibraryManagementSystem.Services
                 bool memberRegistered = Members.Add(newMember);
                 if (!memberRegistered)
                 {
-                    Console.WriteLine($"[ALERT]: member with email = '{email.Trim().ToLower()}' has already been registered in the system!!");
+                    ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[ALERT]: member with email = '{email.Trim().ToLower()}' has already been registered in the system!!"));
                     return;
                 }
 
-                Console.WriteLine("[SUCCESS]: Teacher member successfully registered with following details: !!");
+                ConsoleText.WriteWithDarkGreen(() => Console.WriteLine("[SUCCESS]: Teacher member successfully registered with following details: !!"));
                 Console.WriteLine(newMember);
                 return;
             }
             else
             {
-                Console.WriteLine("[ERROR]: Received invalid member type while registering member in the system.");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[ERROR]: Received invalid member type while registering member in the system."));
                 return;
             }
         }
@@ -153,7 +167,7 @@ namespace LibraryManagementSystem.Services
             // validating book title
             if (Validator.IsStringNullOrEmptyOrWhitespace(bookTitle))
             {
-                Console.WriteLine($"[Invalid Input]: book title can't be empty, or only contains whitespace, entered value = '{bookTitle}'");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[Invalid Input]: book title can't be empty, or only contains whitespace, entered value = '{bookTitle}'"));
                 return;
             }
 
@@ -164,7 +178,7 @@ namespace LibraryManagementSystem.Services
             // validating book author
             if (Validator.IsStringNullOrEmptyOrWhitespace(BookAuthor))
             {
-                Console.WriteLine($"[Invalid Input]: book author can't be empty, or only contains whitespace, entered value = '{BookAuthor}'");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[Invalid Input]: book author can't be empty, or only contains whitespace, entered value = '{BookAuthor}'"));
                 return;
             }
 
@@ -173,7 +187,7 @@ namespace LibraryManagementSystem.Services
 
             if (!bookTypeSelectionSuccess)
             {
-                Console.WriteLine("[ERROR]: Error while book type selection.");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[ERROR]: Error while book type selection."));
                 return;
             }
 
@@ -187,7 +201,7 @@ namespace LibraryManagementSystem.Services
                 // validating book shelfLocation
                 if (Validator.IsStringNullOrEmptyOrWhitespace(bookShelfLocation))
                 {
-                    Console.WriteLine($"[Invalid Input]: book shelfLocation can't be empty, or only contains whitespace, entered value = '{bookShelfLocation}'");
+                    ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[Invalid Input]: book shelfLocation can't be empty, or only contains whitespace, entered value = '{bookShelfLocation}'"));
                     return;
                 }
 
@@ -197,12 +211,12 @@ namespace LibraryManagementSystem.Services
                 // checking if book already exists in the "books" hashset, if not book added then it already exists
                 if (!bookAdded)
                 {
-                    Console.WriteLine($"[ALERT]: Physical book with the following details already exists in the system!!");
+                    ConsoleText.WriteWithDarkYellow(() => Console.WriteLine($"[ALERT]: Physical book with the following details already exists in the system!!"));
                     Console.WriteLine(newBook);
                     return;
                 }
 
-                Console.WriteLine("[SUCCESS]: Physical book has been successfully added to the system!!");
+                ConsoleText.WriteWithDarkGreen(() => Console.WriteLine("[SUCCESS]: Physical book has been successfully added to the system!!"));
                 Console.WriteLine(newBook);
             }
             else if (selectedBookType.Equals(Book.BookType.Ebook))  // for e-book creation
@@ -214,7 +228,7 @@ namespace LibraryManagementSystem.Services
                 // validating book  download link, can't be empty or contains whitespace only
                 if (Validator.IsStringNullOrEmptyOrWhitespace(downloadLinkInput))
                 {
-                    Console.WriteLine($"[Invalid Input]: book download link can't be empty, or only contains whitespace, entered value = '{downloadLinkInput}'");
+                    ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[Invalid Input]: book download link can't be empty, or only contains whitespace, entered value = '{downloadLinkInput}'"));
                     return;
                 }
 
@@ -222,7 +236,7 @@ namespace LibraryManagementSystem.Services
                 bool isValidDownloadLink = Validator.IsValidURL(downloadLinkInput, out string downloadLink);
                 if (!isValidDownloadLink)
                 {
-                    Console.WriteLine($"[Invalid Input]: book download link URL is invalid, entered value = '{downloadLinkInput}'");
+                    ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[Invalid Input]: book download link URL is invalid, entered value = '{downloadLinkInput}'"));
                     return;
                 }
 
@@ -232,17 +246,17 @@ namespace LibraryManagementSystem.Services
                 // checking if book already exists in the "books" hashset, if not book added then it already exists
                 if (!bookAdded)
                 {
-                    Console.WriteLine($"[ALERT]: E-book with the following details already exists in the system!!");
+                    ConsoleText.WriteWithDarkYellow(() => Console.WriteLine($"[ALERT]: E-book with the following details already exists in the system!!"));
                     Console.WriteLine(newBook);
                     return;
                 }
 
-                Console.WriteLine("[SUCCESS]: E-book has been successfully added to the system!!");
+                ConsoleText.WriteWithDarkGreen(() => Console.WriteLine("[SUCCESS]: E-book has been successfully added to the system!!"));
                 Console.WriteLine(newBook);
             }
             else
             {
-                Console.WriteLine("[ERROR]: Received invalid member type while registering member in the system.");
+                ConsoleText.WriteWithDarkGreen(() => Console.WriteLine("[ERROR]: Received invalid member type while registering member in the system."));
                 return;
             }
         }
@@ -271,7 +285,7 @@ namespace LibraryManagementSystem.Services
             // validation: member email input
             if (!Validator.IsValidEmail(memberEmail))
             {
-                Console.WriteLine($"[INVALID INPUT]: Received invalid email, entered value = '{memberEmail}'");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[INVALID INPUT]: Received invalid email, entered value = '{memberEmail}'"));
                 return;
             }
 
@@ -279,8 +293,8 @@ namespace LibraryManagementSystem.Services
             bool memberExists = FindMemberByEmail(memberEmail, out Member member);
             if (!memberExists)
             {
-                Console.WriteLine($"[NOT FOUND ERROR]: Operation failed because member with email = '{memberEmail}' doesn't exists in the system");
-                Console.WriteLine("[SYSTEM SUGGESTION]: Signup by creating a new member in the system");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[NOT FOUND ERROR]: Operation failed because member with email = '{memberEmail}' doesn't exists in the system"));
+                ConsoleText.WriteWithDarkYellow(() => Console.WriteLine("[SYSTEM SUGGESTION]: Signup by creating a new member in the system"));
                 return;
             }
 
@@ -292,7 +306,7 @@ namespace LibraryManagementSystem.Services
             // validating book title
             if (Validator.IsStringNullOrEmptyOrWhitespace(bookTitle))
             {
-                Console.WriteLine($"[Invalid Input]: book title can't be empty, or only contains whitespace, entered value = '{bookTitle}'");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[Invalid Input]: book title can't be empty, or only contains whitespace, entered value = '{bookTitle}'"));
                 return;
             }
 
@@ -303,7 +317,7 @@ namespace LibraryManagementSystem.Services
             // validating book author
             if (Validator.IsStringNullOrEmptyOrWhitespace(bookAuthor))
             {
-                Console.WriteLine($"[Invalid Input]: book author can't be empty, or only contains whitespace, entered value = '{bookAuthor}'");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[Invalid Input]: book author can't be empty, or only contains whitespace, entered value = '{bookAuthor}'"));
                 return;
             }
 
@@ -313,7 +327,7 @@ namespace LibraryManagementSystem.Services
             // system error
             if (!bookTypeSelectionSuccess)
             {
-                Console.WriteLine("[ERROR]: Error while book type selection.");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[ERROR]: Error while book type selection."));
                 return;
             }
 
@@ -321,14 +335,14 @@ namespace LibraryManagementSystem.Services
             Book book = Books.FirstOrDefault(_book => _book.Title.Equals(bookTitle) && _book.Author.Equals(bookAuthor) && _book.Type.Equals(selectedBookType));
             if (book == null)
             {
-                Console.WriteLine("[NOT FOUND]: book with entered details doesn't exist in the system!!");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[NOT FOUND]: book with entered details doesn't exist in the system!!"));
                 return;
             }
 
             // check if book has already been borrowed
             if (book.IsBorrowed)
             {
-                Console.WriteLine("[ALERT]: book with entered details has already been borrowed!!");
+                ConsoleText.WriteWithDarkYellow(() => Console.WriteLine("[ALERT]: book with entered details has already been borrowed!!"));
                 return;
             }
 
@@ -338,17 +352,17 @@ namespace LibraryManagementSystem.Services
             {
                 if (validationError)
                 {
-                    Console.WriteLine("[SYSTEM ERROR]: Error while borrowing book to member");
+                    ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[SYSTEM ERROR]: Error while borrowing book to member"));
                     return;
                 }
-                Console.WriteLine("[ALERT]: Book with given details has already been borrowed by the member");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[ALERT]: Book with given details has already been borrowed by the member"));
                 return;
             }
 
             // set book isBorrowed to true 
             book.BorrowBook();
 
-            Console.WriteLine($"[SUCCESS]: Book with title: '{bookTitle}' has been successfully borrowed by member with name: '{member.Name}' and email: '{member.Email}'");
+            ConsoleText.WriteWithDarkGreen(() => Console.WriteLine($"[SUCCESS]: Book with title: '{bookTitle}' has been successfully borrowed by member with name: '{member.Name}' and email: '{member.Email}'"));
         }
 
         /*
@@ -375,7 +389,7 @@ namespace LibraryManagementSystem.Services
             // validation: member email input
             if (!Validator.IsValidEmail(memberEmail))
             {
-                Console.WriteLine($"[INVALID INPUT]: Received invalid email, entered value = '{memberEmail}'");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[INVALID INPUT]: Received invalid email, entered value = '{memberEmail}'"));
                 return;
             }
 
@@ -383,8 +397,8 @@ namespace LibraryManagementSystem.Services
             bool memberExists = FindMemberByEmail(memberEmail, out Member member);
             if (!memberExists)
             {
-                Console.WriteLine($"[NOT FOUND ERROR]: Operation failed because member with email = '{memberEmail}' doesn't exists in the system");
-                Console.WriteLine("[SYSTEM SUGGESTION]: Signup by creating a new member in the system");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[NOT FOUND ERROR]: Operation failed because member with email = '{memberEmail}' doesn't exists in the system"));
+                ConsoleText.WriteWithDarkYellow(() => Console.WriteLine("[SYSTEM SUGGESTION]: Signup by creating a new member in the system"));
                 return;
             }
 
@@ -396,7 +410,7 @@ namespace LibraryManagementSystem.Services
             // validating book title
             if (Validator.IsStringNullOrEmptyOrWhitespace(bookTitle))
             {
-                Console.WriteLine($"[Invalid Input]: book title can't be empty, or only contains whitespace, entered value = '{bookTitle}'");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[Invalid Input]: book title can't be empty, or only contains whitespace, entered value = '{bookTitle}'"));
                 return;
             }
 
@@ -407,7 +421,7 @@ namespace LibraryManagementSystem.Services
             // validating book author
             if (Validator.IsStringNullOrEmptyOrWhitespace(bookAuthor))
             {
-                Console.WriteLine($"[Invalid Input]: book author can't be empty, or only contains whitespace, entered value = '{bookAuthor}'");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine($"[Invalid Input]: book author can't be empty, or only contains whitespace, entered value = '{bookAuthor}'"));
                 return;
             }
 
@@ -417,7 +431,7 @@ namespace LibraryManagementSystem.Services
             // system error
             if (!bookTypeSelectionSuccess)
             {
-                Console.WriteLine("[ERROR]: Error while book type selection.");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[ERROR]: Error while book type selection."));
                 return;
             }
 
@@ -425,14 +439,14 @@ namespace LibraryManagementSystem.Services
             Book book = Books.FirstOrDefault(_book => _book.Title.Equals(bookTitle) && _book.Author.Equals(bookAuthor) && _book.Type.Equals(selectedBookType));
             if (book == null)
             {
-                Console.WriteLine("[NOT FOUND]: book with entered details doesn't exist in the system!!");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[NOT FOUND]: book with entered details doesn't exist in the system!!"));
                 return;
             }
 
             // check if book was previously borrowed or not
             if (!book.IsBorrowed)
             {
-                Console.WriteLine("[ERROR]: book with entered details was never borrowed!!");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[ERROR]: book with entered details was never borrowed!!"));
                 return;
             }
 
@@ -442,17 +456,17 @@ namespace LibraryManagementSystem.Services
             {
                 if (validationError)
                 {
-                    Console.WriteLine("[SYSTEM ERROR]: Error while doing operation");
+                    ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[SYSTEM ERROR]: Error while doing operation"));
                     return;
                 }
 
-                Console.WriteLine($"[ERROR]: Book wasn't borrowed by you!!");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[ERROR]: Book wasn't borrowed by you!!"));
                 return;
             }
 
             book.ReturnBook();
 
-            Console.WriteLine($"Book with given details and borrowed by '{member.Name}' has been successfully returned!");
+            ConsoleText.WriteWithDarkGreen(() => Console.WriteLine($"Book with given details and borrowed by '{member.Name}' has been successfully returned!"));
         }
 
         // done
@@ -460,7 +474,7 @@ namespace LibraryManagementSystem.Services
         {
             if (AllBookTitlesList.Count == 0)
             {
-                Console.WriteLine("[ALERT]: No book titles found!!");
+                ConsoleText.WriteWithDarkRed(() => Console.WriteLine("[ALERT]: No book titles found!!"));
                 return;
             }
 

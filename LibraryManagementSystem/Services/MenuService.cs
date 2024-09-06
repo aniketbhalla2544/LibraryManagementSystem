@@ -97,10 +97,11 @@ namespace LibraryManagementSystem.Services
 
         public static void Start()
         {
-            LibManagementSystem libraryManagementSystem = new LibManagementSystem();
+            LibManagementSystem libraryManagementSystem = LibManagementSystem.Instance;
 
             Console.WriteLine("============= WELCOME TO LIBRARY MANAGEMENT SYSTEM ==============\n");
             DisplayMenu();
+
 
             bool AskActionNumberUserInput = true;
             while (AskActionNumberUserInput)
