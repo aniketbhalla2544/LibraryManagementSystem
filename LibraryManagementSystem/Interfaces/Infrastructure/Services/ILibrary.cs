@@ -1,7 +1,7 @@
 ﻿
 namespace LibraryManagementSystem.Interfaces.Infrastrcture.Services
 {
-    internal interface ILibraryService
+    internal interface ILibrary
     {
         void RegisterMember();
         void AddBook();

@@ -11,6 +11,8 @@ namespace LibraryManagementSystem.Utils
             return Guid.NewGuid().ToString("N").Substring(startIndex, length);
         }
 
+      
+
         public static bool IntInValidRange(int check, int max, int min)
         {
             if (max < min || min > max)

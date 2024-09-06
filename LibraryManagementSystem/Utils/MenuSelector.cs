@@ -5,7 +5,7 @@ namespace LibraryManagementSystem.Utils
 {
     internal static class MenuSelector
     {
-        public static string SelectOption(List<string> options, string message = "Use the arrow keys to navigate and press Enter to select:", bool beepSound = true)
+        public static string SelectOption(List<string> options, string message = "Use the arrow keys to navigate and press Enter to select:", bool beepSound = false)
         {
             int currentSelection = 0;
             ConsoleKey key;
@@ -14,7 +14,6 @@ namespace LibraryManagementSystem.Utils
 
             // Store the initial cursor position
             int cursorTop = Console.CursorTop;
-
 
             do
             {
