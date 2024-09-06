@@ -10,7 +10,7 @@ namespace LibraryManagementSystem
 
         static void Main()
         {
-            MenuService.Start();
+            Menu.Start();
 
             Console.ReadLine();
         }

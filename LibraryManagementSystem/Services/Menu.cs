@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace LibraryManagementSystem.Services
 {
-    internal static class MenuService
+    internal static class Menu
     {
         const string ADD_BOOK_ACTION_TEXT = "[ACTION]: Add Book";
         const string BORROW_BOOK_ACTION_TEXT = "[ACTION]: Borrow book";
@@ -97,7 +97,7 @@ namespace LibraryManagementSystem.Services
 
         public static void Start()
         {
-            LibManagementSystem libraryManagementSystem = LibManagementSystem.Instance;
+            Library library = Library.Instance;
 
             Console.WriteLine("============= WELCOME TO LIBRARY MANAGEMENT SYSTEM ==============\n");
             DisplayMenu();
@@ -124,55 +124,53 @@ namespace LibraryManagementSystem.Services
                         continue;
                     case (int)Actions.AddBook:
                         Console.WriteLine($"\n{ADD_BOOK_ACTION_TEXT}");
-                        libraryManagementSystem.AddBook();
+                        library.AddBook();
                         break;
                     case (int)Actions.ReturnBook:
                         Console.WriteLine($"\n{RETURN_BOOK_ACTION_TEXT}");
-                        libraryManagementSystem.ReturnBook();
+                        library.ReturnBook();
                         break;
                     case (int)Actions.BorrowBook:
                         Console.WriteLine($"\n{BORROW_BOOK_ACTION_TEXT}");
-                        libraryManagementSystem.BorrowBook();
+                        library.BorrowBook();
                         break;
                     case (int)Actions.GetTotalPhysicalBooks:
-                        Console.WriteLine($"Total physical books: {libraryManagementSystem.PhysicalBooks.Count}");
+                        Console.WriteLine($"Total physical books: {library.PhysicalBooks.Count}");
                         break;
                     case (int)Actions.GetTotalEBooks:
-                        Console.WriteLine($"Total e-books: {libraryManagementSystem.EBooks.Count}");
+                        Console.WriteLine($"Total e-books: {library.EBooks.Count}");
                         break;
                     case (int)Actions.GetTotalBorrowedPhysicalBooks:
-                        Console.WriteLine($"Total borrowed physicalBooks: {libraryManagementSystem.TotalBorrowedPhysicalBooks}");
+                        Console.WriteLine($"Total borrowed physicalBooks: {library.TotalBorrowedPhysicalBooks}");
                         break;
                     case (int)Actions.GetTotalBorrowedEBooks:
-                        Console.WriteLine($"Total borrowed e-books: {libraryManagementSystem.TotalBorrowedEBooks}");
+                        Console.WriteLine($"Total borrowed e-books: {library.TotalBorrowedEBooks}");
                         break;
                     case (int)Actions.GetAllBookTitles:
-                        libraryManagementSystem.ConsoleAllBookTitles();
+                        library.ConsoleAllBookTitles();
                         break;
                     case (int)Actions.GetTotalBooksCount:
-                        Console.WriteLine($"System's total books count: {libraryManagementSystem.TotalBooksCount}");
+                        Console.WriteLine($"System's total books count: {library.TotalBooksCount}");
                         break;
                     case (int)Actions.RegisterMember:
                         Console.WriteLine($"\n{REGISTER_MEMBER_TEXT}");
-                        libraryManagementSystem.RegisterMember();
+                        library.RegisterMember();
                         break;
                     case (int)Actions.GetTotalMembersCount:
-                        Console.WriteLine($"Total members count: {libraryManagementSystem.TotalMembersCount}");
+                        Console.WriteLine($"Total members count: {library.TotalMembersCount}");
                         break;
                     case (int)Actions.GetTotalTeacherMembersCount:
-                        Console.WriteLine($"Total members count: {libraryManagementSystem.TotalTeacherMembersCount}");
+                        Console.WriteLine($"Total members count: {library.TotalTeacherMembersCount}");
                         break;
                     case (int)Actions.GetTotalStudentMembersCount:
-                        Console.WriteLine($"Total members count: {libraryManagementSystem.TotalStudentMembersCount}");
+                        Console.WriteLine($"Total members count: {library.TotalStudentMembersCount}");
                         break;
                     default:
                         Console.WriteLine("[ERROR]: Something went wrong while choosing menu");
                         break;
                 }
                 Console.WriteLine();
-
             }
-
         }
     }
 }

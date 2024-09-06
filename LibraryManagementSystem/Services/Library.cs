@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace LibraryManagementSystem.Services
 {
-    internal class LibManagementSystem : ILibraryService
+    internal class Library : ILibrary
     {
         private HashSet<Member> Members { get; set; } = new HashSet<Member>();
         private HashSet<Book> Books { get; set; } = new HashSet<Book>();
@@ -38,16 +38,16 @@ namespace LibraryManagementSystem.Services
         }
         public long TotalBooksCount { get => PhysicalBooks.Count + EBooks.Count; }
 
-        static LibManagementSystem instance = null;
+        static Library instance = null;
 
-        LibManagementSystem() { }
+        Library() { }
 
-        public static LibManagementSystem Instance
+        public static Library Instance
         {
             get
             {
                 // TODO: Add thread locking
-                if (Equals(Instance, null)) instance = new LibManagementSystem();
+                if (Equals(Instance, null)) instance = new Library();
                 return instance;
             }
         }
