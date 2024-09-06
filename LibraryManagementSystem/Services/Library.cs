@@ -47,7 +47,7 @@ namespace LibraryManagementSystem.Services
             get
             {
                 // TODO: Add thread locking
-                if (Equals(Instance, null)) instance = new Library();
+                if (Equals(instance, null)) instance = new Library();
                 return instance;
             }
         }
