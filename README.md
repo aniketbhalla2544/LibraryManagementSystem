@@ -1,5 +1,5 @@
 # LibraryManagementSystem
-![Library-management-system--aniket](https://github.com/user-attachments/assets/c84bfc3e-f0ab-4e97-9c1e-e863810b4dc8)
+![Library-management-system--aniket](https://github.com/user-attachments/assets/2f810e77-6943-48f3-a5db-de9539837719)
 ## Features
 1. Interactive menu with `menu selector` options
 2. Add unique books (physical and e-book) and members (teacher and student) to the system
