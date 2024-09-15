@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Text.RegularExpressions;
-
 
 namespace LibraryManagementSystem.Utils
 {
     internal static class CustomUtils
     {
+        // purpose: to gernerate unique id every it's being called
         public static string GenerateUniqueID(int startIndex = 0, int length = 32)
         {
             return Guid.NewGuid().ToString("N").Substring(startIndex, length);
@@ -18,6 +17,5 @@ namespace LibraryManagementSystem.Utils
 
             return check >= min && check <= max;
         }
-    
     }
 }
