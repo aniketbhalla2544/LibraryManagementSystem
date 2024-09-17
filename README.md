@@ -7,7 +7,7 @@ This console application demonstrates core functionalities and highlights profic
 
 1. C#
    
-2. Concepts of Object Oriented Programming.
+2. Concepts of Object Oriented Programming
 
 3. Design patterns
 
